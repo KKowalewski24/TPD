@@ -3,7 +3,9 @@ import sys
 
 import numpy as np
 
+from module.decision_criteria.criteria import max_max_criteria
 from module.decision_criteria.criteria import maxi_min_criteria
+from module.decision_criteria.criteria import mini_max_criteria
 
 """
 """
@@ -19,8 +21,9 @@ base_matrix: np.ndarray = np.array([
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
-    record = maxi_min_criteria(base_matrix)
-    print(record)
+    print(maxi_min_criteria(base_matrix))
+    print(mini_max_criteria(base_matrix))
+    print(max_max_criteria(base_matrix))
     display_finish()
 
 
