@@ -1,4 +1,17 @@
-# MIni Max - Wald
+from typing import Union
+
+import numpy as np
+
+from module.Record import Record
+
+
+# Max Min - Wald
+def maxi_min_criteria(matrix: np.ndarray) -> Record:
+    sub_result: Union[np.number, np.ndarray] = matrix.min(axis=1)
+    return Record(sub_result.argmax().__int__(), sub_result.max().__float__())
+
+
+# Mini Max
 def mini_max_criteria() -> None:
     pass
 

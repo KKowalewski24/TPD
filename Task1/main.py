@@ -3,6 +3,8 @@ import sys
 
 import numpy as np
 
+from module.decision_criteria.criteria import maxi_min_criteria
+
 """
 """
 
@@ -17,6 +19,8 @@ base_matrix: np.ndarray = np.array([
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
+    record = maxi_min_criteria(base_matrix)
+    print(record)
     display_finish()
 
 
@@ -26,10 +30,6 @@ def main() -> None:
 def check_types_check_style() -> None:
     subprocess.call(["mypy", "."])
     subprocess.call(["flake8", "."])
-
-
-def compile_to_pyc() -> None:
-    subprocess.call(["python", "-m", "compileall", "."])
 
 
 def display_finish() -> None:
@@ -42,8 +42,6 @@ def display_finish() -> None:
 if __name__ == "__main__":
     if len(sys.argv) == 2 and (sys.argv[1] == "typing" or sys.argv[1] == "-t"):
         check_types_check_style()
-    elif len(sys.argv) == 2 and (sys.argv[1] == "build" or sys.argv[1] == "-b"):
-        compile_to_pyc()
+        main()
     else:
-        check_types_check_style()
         main()
