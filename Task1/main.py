@@ -35,6 +35,10 @@ def check_types_check_style() -> None:
     subprocess.call(["flake8", "."])
 
 
+def check_if_args_exists(arg: str) -> bool:
+    return arg in sys.argv
+
+
 def display_finish() -> None:
     print("------------------------------------------------------------------------")
     print("FINISHED")
@@ -43,8 +47,7 @@ def display_finish() -> None:
 
 # __MAIN__ ------------------------------------------------------------------- #
 if __name__ == "__main__":
-    if len(sys.argv) == 2 and (sys.argv[1] == "typing" or sys.argv[1] == "-t"):
+    if check_if_args_exists("-t"):
         check_types_check_style()
-        main()
-    else:
-        main()
+
+    main()
