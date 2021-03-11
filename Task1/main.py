@@ -31,9 +31,13 @@ lecture_matrix: np.ndarray = np.array([
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
-    chosen_matrix: np.ndarray = lecture_matrix
+    chosen_matrix: np.ndarray = matrix_from_task
+    print("chosen_matrix")
+    print(chosen_matrix)
+
     hurwicz_factor: float = get_factor()
     probabilities: List[float] = get_probabilities()
+    print()
 
     display_result(
         maxi_min_criteria(chosen_matrix),
