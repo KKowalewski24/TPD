@@ -30,18 +30,37 @@ lecture_matrix: np.ndarray = np.array([
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
     chosen_matrix: np.ndarray = lecture_matrix
-    # todo add argv choose
+    hurwicz_factor: float = get_factor()
+
     display_result(maxi_min_criteria(chosen_matrix))
     display_result(mini_max_criteria(chosen_matrix))
     display_result(max_max_criteria(chosen_matrix))
-    display_result(hurwicz_criteria(chosen_matrix, 0.25))
+    display_result(hurwicz_criteria(chosen_matrix, hurwicz_factor))
 
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
+def get_factor() -> float:
+    is_float: bool = False
+    value: str = ""
+    while not is_float:
+        value = input("Podaj współczynnik do kryterium Hurwicza: ")
+        is_float = is_convertible_to_float(value)
+
+    return float(value)
+
+
 def display_result(record: Record) -> None:
     print("Decyzja numer: " + str(record.row_number + 1))
+
+
+def is_convertible_to_float(value: str):
+    try:
+        float(value)
+        return True
+    except ValueError:
+        return False
 
 
 # UTIL ----------------------------------------------------------------------- #
