@@ -4,7 +4,7 @@ import sys
 import numpy as np
 
 from module.Record import Record
-from module.decision_criteria.criteria import hurwicz_criteria, max_max_criteria, \
+from module.criteria import hurwicz_criteria, max_max_criteria, \
     maxi_min_criteria, mini_max_criteria, savage_criteria, bayes_laplace_criteria
 
 """
@@ -32,12 +32,30 @@ def main() -> None:
     chosen_matrix: np.ndarray = lecture_matrix
     hurwicz_factor: float = get_factor()
 
-    display_result(maxi_min_criteria(chosen_matrix))
-    display_result(mini_max_criteria(chosen_matrix))
-    display_result(max_max_criteria(chosen_matrix))
-    display_result(hurwicz_criteria(chosen_matrix, hurwicz_factor))
-    display_result(bayes_laplace_criteria(chosen_matrix))
-    display_result(savage_criteria(chosen_matrix))
+    display_result(
+        maxi_min_criteria(chosen_matrix),
+        "Minimaks użyteczności - maksymalizuje najmniejszą możliwą użyteczność"
+    )
+    display_result(
+        mini_max_criteria(chosen_matrix),
+        "Minimaks zawodu - minimaluzuje największy możliwy zawód"
+    )
+    display_result(
+        max_max_criteria(chosen_matrix),
+        "Max Max - kryterium optymistyczne"
+    )
+    display_result(
+        hurwicz_criteria(chosen_matrix, hurwicz_factor),
+        "Hurwicz"
+    )
+    display_result(
+        bayes_laplace_criteria(chosen_matrix),
+        "Bayes Laplace"
+    )
+    display_result(
+        savage_criteria(chosen_matrix),
+        "Savage"
+    )
 
     display_finish()
 
@@ -53,8 +71,9 @@ def get_factor() -> float:
     return float(value)
 
 
-def display_result(record: Record) -> None:
-    print("Decyzja numer: " + str(record.row_number + 1))
+def display_result(record: Record, criteria_name: str) -> None:
+    print(criteria_name)
+    print("\t\tDecyzja numer: " + str(record.row_number + 1))
 
 
 def is_convertible_to_float(value: str):
