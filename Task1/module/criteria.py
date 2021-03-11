@@ -1,4 +1,4 @@
-from typing import Any, Union, List
+from typing import Any, List, Union
 
 import numpy as np
 
@@ -69,8 +69,24 @@ def hurwicz_criteria(matrix: np.ndarray, factor: float,
 
 
 # Bayes Laplace
-def bayes_laplace_criteria(matrix: np.ndarray, debug_mode: bool = False) -> Record:
-    return Record(1, 1)
+def bayes_laplace_criteria(matrix: np.ndarray, probabilities: List[float],
+                           debug_mode: bool = False) -> Record:
+    columns_number: int = matrix.shape[1]
+    if columns_number != len(probabilities):
+        raise Exception(
+            "Number of probabilities must equal to number of column in matrix")
+
+    columns_multiplied_summed: Union[np.number[Any], np.ndarray] = np.array(
+        matrix * probabilities
+    ).sum(axis=1)
+
+    if debug_mode:
+        print(columns_multiplied_summed)
+
+    return Record(
+        int(columns_multiplied_summed.argmax()),
+        float(columns_multiplied_summed.max())
+    )
 
 
 # Savage - jest błąd w wykładzie - strona 39 - [zbożę 4, normalne] - powinno byc 5 a nie 3
@@ -99,5 +115,6 @@ def savage_criteria(matrix: np.ndarray, debug_mode: bool = False) -> Record:
         print(max_relative_losses_matrix)
 
     return Record(
-        int(max_relative_losses_matrix.argmin()), float(max_relative_losses_matrix.min())
+        int(max_relative_losses_matrix.argmin()),
+        float(max_relative_losses_matrix.min())
     )

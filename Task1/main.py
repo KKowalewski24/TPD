@@ -49,7 +49,7 @@ def main() -> None:
         "Hurwicz"
     )
     display_result(
-        bayes_laplace_criteria(chosen_matrix),
+        bayes_laplace_criteria(chosen_matrix, [1 / 3, 1 / 6, 1 / 2]),
         "Bayes Laplace"
     )
     display_result(
