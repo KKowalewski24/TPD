@@ -5,7 +5,7 @@ import numpy as np
 
 from module.Record import Record
 from module.decision_criteria.criteria import hurwicz_criteria, max_max_criteria, \
-    maxi_min_criteria, mini_max_criteria
+    maxi_min_criteria, mini_max_criteria, savage_criteria, bayes_laplace_criteria
 
 """
 """
@@ -21,7 +21,7 @@ matrix_from_task: np.ndarray = np.array([
 lecture_matrix: np.ndarray = np.array([
     [24, 28, 36],
     [31, 30, 28],
-    [28, 24, 29],
+    [28, 34, 29],
     [27, 29, 33],
     [31, 30, 29],
 ])
@@ -36,6 +36,8 @@ def main() -> None:
     display_result(mini_max_criteria(chosen_matrix))
     display_result(max_max_criteria(chosen_matrix))
     display_result(hurwicz_criteria(chosen_matrix, hurwicz_factor))
+    display_result(bayes_laplace_criteria(chosen_matrix))
+    display_result(savage_criteria(chosen_matrix))
 
     display_finish()
 

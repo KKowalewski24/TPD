@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Any, Union, List
 
 import numpy as np
 
@@ -73,6 +73,23 @@ def bayes_laplace_criteria(matrix: np.ndarray, debug_mode: bool = False) -> Reco
     return Record(1, 1)
 
 
-# Savege
+# Savage - jest błąd w wykładzie - strona 39 - [zbożę 4, normalne] - powinno byc 5 a nie 3
 def savage_criteria(matrix: np.ndarray, debug_mode: bool = False) -> Record:
-    return Record(1, 1)
+    matrix_transposed: List[Any] = matrix.transpose().tolist()
+    max_column_values: Union[np.number, np.ndarray] = matrix.max(axis=0)
+
+    relative_losses_matrix: List[Any] = []
+    for row_index in range(len(matrix_transposed)):
+        relative_losses_matrix.append([])
+        for item_index in range(len(matrix_transposed[row_index])):
+            relative_losses_matrix[row_index].append(abs(
+                matrix_transposed[row_index][item_index] - max_column_values[row_index]
+            ))
+
+    max_relative_losses_matrix: Union[np.number, np.ndarray] = np.array(
+        relative_losses_matrix
+    ).max(axis=0)
+
+    return Record(
+        int(max_relative_losses_matrix.argmin()), float(max_relative_losses_matrix.min())
+    )
