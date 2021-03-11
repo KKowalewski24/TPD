@@ -1,6 +1,6 @@
-from typing import List
-
 from nameof import nameof
+
+from module.util import to_string_class_formatter
 
 
 class Record:
@@ -15,15 +15,3 @@ class Record:
             [nameof(self.row_number), nameof(self.value), ],
             "\t\t"
         )
-
-
-def to_string_class_formatter(variables: List[object], variables_names: List[str],
-                              separator: str = "\t") -> str:
-    if len(variables) != len(variables):
-        raise Exception("Both arrays must have equal size")
-
-    result: str = ""
-    for i in range(len(variables)):
-        result += variables_names[i] + ": " + str(variables[i]) + separator
-
-    return result
