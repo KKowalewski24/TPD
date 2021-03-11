@@ -2,10 +2,12 @@ import subprocess
 import sys
 
 import numpy as np
+from typing import List
 
 from module.Record import Record
 from module.criteria import hurwicz_criteria, max_max_criteria, \
     maxi_min_criteria, mini_max_criteria, savage_criteria, bayes_laplace_criteria
+from module.util import is_convertible_to_float, is_array_convertible_to_int
 
 """
 """
@@ -31,6 +33,7 @@ lecture_matrix: np.ndarray = np.array([
 def main() -> None:
     chosen_matrix: np.ndarray = lecture_matrix
     hurwicz_factor: float = get_factor()
+    probabilities: List[float] = get_probabilities()
 
     display_result(
         maxi_min_criteria(chosen_matrix),
@@ -49,7 +52,7 @@ def main() -> None:
         "Hurwicz"
     )
     display_result(
-        bayes_laplace_criteria(chosen_matrix, [1 / 3, 1 / 6, 1 / 2]),
+        bayes_laplace_criteria(chosen_matrix, probabilities),
         "Bayes Laplace"
     )
     display_result(
@@ -71,17 +74,21 @@ def get_factor() -> float:
     return float(value)
 
 
+def get_probabilities() -> List[float]:
+    value: str = ""
+    has_only_integers: bool = False
+    while not has_only_integers:
+        value = input(
+            "Podaj kolejne dzielniki ułamków zwykłych prawdobienśtw rozdzielone spacjami: "
+        )
+        has_only_integers = is_array_convertible_to_int(value.split())
+
+    return [1 / int(item) for item in value.split()]
+
+
 def display_result(record: Record, criteria_name: str) -> None:
     print(criteria_name)
     print("\t\tDecyzja numer: " + str(record.row_number + 1))
-
-
-def is_convertible_to_float(value: str):
-    try:
-        float(value)
-        return True
-    except ValueError:
-        return False
 
 
 # UTIL ----------------------------------------------------------------------- #
