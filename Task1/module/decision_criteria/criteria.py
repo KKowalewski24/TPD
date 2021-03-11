@@ -78,6 +78,10 @@ def savage_criteria(matrix: np.ndarray, debug_mode: bool = False) -> Record:
     matrix_transposed: List[Any] = matrix.transpose().tolist()
     max_column_values: Union[np.number, np.ndarray] = matrix.max(axis=0)
 
+    if debug_mode:
+        print(matrix_transposed)
+        print(max_column_values)
+
     relative_losses_matrix: List[Any] = []
     for row_index in range(len(matrix_transposed)):
         relative_losses_matrix.append([])
@@ -89,6 +93,10 @@ def savage_criteria(matrix: np.ndarray, debug_mode: bool = False) -> Record:
     max_relative_losses_matrix: Union[np.number, np.ndarray] = np.array(
         relative_losses_matrix
     ).max(axis=0)
+
+    if debug_mode:
+        print(relative_losses_matrix)
+        print(max_relative_losses_matrix)
 
     return Record(
         int(max_relative_losses_matrix.argmin()), float(max_relative_losses_matrix.min())
