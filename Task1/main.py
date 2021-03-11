@@ -3,9 +3,8 @@ import sys
 
 import numpy as np
 
-from module.decision_criteria.criteria import max_max_criteria
-from module.decision_criteria.criteria import maxi_min_criteria
-from module.decision_criteria.criteria import mini_max_criteria
+from module.decision_criteria.criteria import hurwicz_criteria, max_max_criteria, \
+    maxi_min_criteria, mini_max_criteria
 
 """
 """
@@ -24,6 +23,7 @@ def main() -> None:
     print(maxi_min_criteria(base_matrix))
     print(mini_max_criteria(base_matrix))
     print(max_max_criteria(base_matrix))
+    print(hurwicz_criteria(base_matrix, 0.25))
     display_finish()
 
 
@@ -35,7 +35,7 @@ def check_types_check_style() -> None:
     subprocess.call(["flake8", "."])
 
 
-def check_if_args_exists(arg: str) -> bool:
+def check_if_exists_in_args(arg: str) -> bool:
     return arg in sys.argv
 
 
@@ -47,7 +47,7 @@ def display_finish() -> None:
 
 # __MAIN__ ------------------------------------------------------------------- #
 if __name__ == "__main__":
-    if check_if_args_exists("-t"):
+    if check_if_exists_in_args("-t"):
         check_types_check_style()
 
     main()
