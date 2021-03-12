@@ -10,6 +10,10 @@ from module.criteria import hurwicz_criteria, max_max_criteria, \
 from module.util import is_convertible_to_float, is_array_convertible_to_int
 
 """
+4. Zrzeszenie przedsiębiorstw zamierza zwiększyć swój potencjał przemysłowy dzięki
+wybudowaniu nowego zakładu. Istnieją cztery warianty planu inwestycyjnego: 50, 100,
+150 i 200 tys. zł, które w zależności od wielu czynników losowych (stanów natury) mogą
+dać różne przyrosty produkcji. Wyróżniono cztery stany natury. Dane przedstawia tabela:
 """
 
 # VAR ------------------------------------------------------------------------ #
