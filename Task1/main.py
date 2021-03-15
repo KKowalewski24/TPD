@@ -1,5 +1,6 @@
 import subprocess
 import sys
+import os
 
 import numpy as np
 from typing import List
@@ -9,33 +10,10 @@ from module.criteria import hurwicz_criteria, max_max_criteria, \
     maxi_min_criteria, savage_criteria, bayes_laplace_criteria
 from module.util import is_convertible_to_float, is_array_convertible_to_int
 
-"""
-4. Zrzeszenie przedsiębiorstw zamierza zwiększyć swój potencjał przemysłowy dzięki
-wybudowaniu nowego zakładu. Istnieją cztery warianty planu inwestycyjnego: 50, 100,
-150 i 200 tys. zł, które w zależności od wielu czynników losowych (stanów natury) mogą
-dać różne przyrosty produkcji. Wyróżniono cztery stany natury. Dane przedstawia tabela:
-"""
-
-# VAR ------------------------------------------------------------------------ #
-matrix_from_task: np.ndarray = np.array([
-    [0.5, 0.6, 0.4, 0.5],
-    [0.1, 0.7, 0.4, 0.7],
-    [0.8, 0.2, 0.5, 0.5],
-    [0.1, 0.8, 0.5, 0.7],
-])
-
-lecture_matrix: np.ndarray = np.array([
-    [24, 28, 36],
-    [31, 30, 28],
-    [28, 34, 29],
-    [27, 29, 33],
-    [31, 30, 29],
-])
-
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
-    chosen_matrix: np.ndarray = matrix_from_task
+    chosen_matrix: np.ndarray = np.loadtxt(get_filename())
     print("chosen_matrix")
     print(chosen_matrix)
 
@@ -83,11 +61,18 @@ def get_probabilities() -> List[float]:
     has_only_integers: bool = False
     while not has_only_integers:
         value = input(
-            "Podaj kolejne dzielniki ułamków zwykłych prawdobienśtw rozdzielone spacjami: "
+            "Podaj kolejne dzielniki ułamków zwykłych prawdopodobieństw rozdzielone spacjami: "
         )
         has_only_integers = is_array_convertible_to_int(value.split())
 
     return [1 / int(item) for item in value.split()]
+
+
+def get_filename() -> str:
+    filename: str = ""
+    while not os.path.isfile(filename):
+        filename = input("Podaj nazwę pliku txt z macierzą użyteczności: ")
+    return filename
 
 
 def display_result(record: Record, criteria_name: str) -> None:
