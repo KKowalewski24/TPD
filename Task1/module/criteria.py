@@ -1,4 +1,4 @@
-from typing import Any, List, Union
+from typing import List
 
 import numpy as np
 
@@ -63,9 +63,7 @@ def bayes_laplace_criteria(matrix: np.ndarray, probabilities: List[float],
         raise Exception(
             "Number of probabilities must equal to number of column in matrix")
 
-    columns_multiplied_summed: Union[np.number[Any], np.ndarray] = np.array(
-        matrix * probabilities
-    ).sum(axis=1)
+    columns_multiplied_summed = np.sum(matrix * probabilities, axis=1)
 
     if debug_mode:
         print(columns_multiplied_summed)
@@ -74,24 +72,9 @@ def bayes_laplace_criteria(matrix: np.ndarray, probabilities: List[float],
 
 # Savage - jest błąd w wykładzie - strona 39 - [zbożę 4, normalne] - powinno byc 5 a nie 3
 def savage_criteria(matrix: np.ndarray, debug_mode: bool = False) -> int:
-    matrix_transposed: List[Any] = matrix.transpose().tolist()
-    max_column_values: Union[np.number, np.ndarray] = matrix.max(axis=0)
 
-    if debug_mode:
-        print(matrix_transposed)
-        print(max_column_values)
-
-    relative_losses_matrix = []
-    for row_index in range(len(matrix_transposed)):
-        relative_losses_matrix.append([])
-        for item_index in range(len(matrix_transposed[row_index])):
-            relative_losses_matrix[row_index].append(abs(
-                matrix_transposed[row_index][item_index] - max_column_values[row_index]
-            ))
-
-    max_relative_losses_matrix: Union[np.number, np.ndarray] = np.array(
-        relative_losses_matrix
-    ).max(axis=0)
+    relative_losses_matrix = (matrix.max(axis=0) - matrix)
+    max_relative_losses_matrix = relative_losses_matrix.max(axis=1)
 
     if debug_mode:
         print(relative_losses_matrix)
