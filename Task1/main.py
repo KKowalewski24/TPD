@@ -5,7 +5,6 @@ import os
 import numpy as np
 from typing import List
 
-from module.Record import Record
 from module.criteria import hurwicz_criteria, max_max_criteria, \
     maxi_min_criteria, savage_criteria, bayes_laplace_criteria
 from module.util import is_convertible_to_float, is_array_convertible_to_int
@@ -75,9 +74,9 @@ def get_filename() -> str:
     return filename
 
 
-def display_result(record: Record, criteria_name: str) -> None:
+def display_result(decision_number: int, criteria_name: str) -> None:
     print(criteria_name)
-    print("\t\tDecyzja numer: " + str(record.row_number + 1))
+    print("\t\tDecyzja numer: " + str(decision_number + 1))
 
 
 # UTIL ----------------------------------------------------------------------- #

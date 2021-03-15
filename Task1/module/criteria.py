@@ -2,30 +2,28 @@ from typing import Any, List, Union
 
 import numpy as np
 
-from module.Record import Record
-
 
 # Minimaks użyteczności - maksymalizuje najmniejszą możliwą użyteczność
-def maxi_min_criteria(matrix: np.ndarray, debug_mode: bool = False) -> Record:
+def maxi_min_criteria(matrix: np.ndarray, debug_mode: bool = False) -> int:
     min_rows: Union[np.number, np.ndarray] = matrix.min(axis=1)
     if debug_mode:
         print("min_rows")
         print(min_rows)
-    return Record(int(min_rows.argmax()), float(min_rows.max()))
+    return min_rows.argmax()
 
 
 # Max Max - kryterium optymistyczne
-def max_max_criteria(matrix: np.ndarray, debug_mode: bool = False) -> Record:
+def max_max_criteria(matrix: np.ndarray, debug_mode: bool = False) -> int:
     max_rows: Union[np.number, np.ndarray] = matrix.max(axis=1)
     if debug_mode:
         print("max_rows")
         print(max_rows)
-    return Record(int(max_rows.argmax()), float(max_rows.max()))
+    return max_rows.argmax()
 
 
 # Hurwicz
 def hurwicz_criteria(matrix: np.ndarray, factor: float,
-                     debug_mode: bool = False) -> Record:
+                     debug_mode: bool = False) -> int:
     if factor > 1:
         raise Exception("factor cannot be greater than 1!")
 
@@ -56,12 +54,12 @@ def hurwicz_criteria(matrix: np.ndarray, factor: float,
         print("summed_rows")
         print(summed_rows)
 
-    return Record(int(summed_rows.argmax()), float(summed_rows.max()))
+    return summed_rows.argmax()
 
 
 # Bayes Laplace
 def bayes_laplace_criteria(matrix: np.ndarray, probabilities: List[float],
-                           debug_mode: bool = False) -> Record:
+                           debug_mode: bool = False) -> int:
     columns_number: int = matrix.shape[1]
     if columns_number != len(probabilities):
         raise Exception(
@@ -73,15 +71,11 @@ def bayes_laplace_criteria(matrix: np.ndarray, probabilities: List[float],
 
     if debug_mode:
         print(columns_multiplied_summed)
-
-    return Record(
-        int(columns_multiplied_summed.argmax()),
-        float(columns_multiplied_summed.max())
-    )
+    return columns_multiplied_summed.argmax()
 
 
 # Savage - jest błąd w wykładzie - strona 39 - [zbożę 4, normalne] - powinno byc 5 a nie 3
-def savage_criteria(matrix: np.ndarray, debug_mode: bool = False) -> Record:
+def savage_criteria(matrix: np.ndarray, debug_mode: bool = False) -> int:
     matrix_transposed: List[Any] = matrix.transpose().tolist()
     max_column_values: Union[np.number, np.ndarray] = matrix.max(axis=0)
 
@@ -105,7 +99,4 @@ def savage_criteria(matrix: np.ndarray, debug_mode: bool = False) -> Record:
         print(relative_losses_matrix)
         print(max_relative_losses_matrix)
 
-    return Record(
-        int(max_relative_losses_matrix.argmin()),
-        float(max_relative_losses_matrix.min())
-    )
+    return max_relative_losses_matrix.argmin()
