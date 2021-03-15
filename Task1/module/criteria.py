@@ -14,15 +14,6 @@ def maxi_min_criteria(matrix: np.ndarray, debug_mode: bool = False) -> Record:
     return Record(int(min_rows.argmax()), float(min_rows.max()))
 
 
-# Minimaks zawodu - minimaluzuje największy możliwy zawód
-def mini_max_criteria(matrix: np.ndarray, debug_mode: bool = False) -> Record:
-    max_rows: Union[np.number, np.ndarray] = matrix.max(axis=1)
-    if debug_mode:
-        print("max_rows")
-        print(max_rows)
-    return Record(int(max_rows.argmin()), float(max_rows.min()))
-
-
 # Max Max - kryterium optymistyczne
 def max_max_criteria(matrix: np.ndarray, debug_mode: bool = False) -> Record:
     max_rows: Union[np.number, np.ndarray] = matrix.max(axis=1)

@@ -6,7 +6,7 @@ from typing import List
 
 from module.Record import Record
 from module.criteria import hurwicz_criteria, max_max_criteria, \
-    maxi_min_criteria, mini_max_criteria, savage_criteria, bayes_laplace_criteria
+    maxi_min_criteria, savage_criteria, bayes_laplace_criteria
 from module.util import is_convertible_to_float, is_array_convertible_to_int
 
 """
@@ -46,10 +46,6 @@ def main() -> None:
     display_result(
         maxi_min_criteria(chosen_matrix),
         "Minimaks użyteczności - maksymalizuje najmniejszą możliwą użyteczność"
-    )
-    display_result(
-        mini_max_criteria(chosen_matrix),
-        "Minimaks zawodu - minimaluzuje największy możliwy zawód"
     )
     display_result(
         max_max_criteria(chosen_matrix),
