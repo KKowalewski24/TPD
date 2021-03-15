@@ -5,20 +5,20 @@ import numpy as np
 
 # Minimaks użyteczności - maksymalizuje najmniejszą możliwą użyteczność
 def maxi_min_criteria(matrix: np.ndarray, debug_mode: bool = False) -> int:
-    min_rows: Union[np.number, np.ndarray] = matrix.min(axis=1)
+    min_rows = matrix.min(axis=1)
     if debug_mode:
         print("min_rows")
         print(min_rows)
-    return min_rows.argmax()
+    return int(min_rows.argmax())
 
 
 # Max Max - kryterium optymistyczne
 def max_max_criteria(matrix: np.ndarray, debug_mode: bool = False) -> int:
-    max_rows: Union[np.number, np.ndarray] = matrix.max(axis=1)
+    max_rows = matrix.max(axis=1)
     if debug_mode:
         print("max_rows")
         print(max_rows)
-    return max_rows.argmax()
+    return int(max_rows.argmax())
 
 
 # Hurwicz
@@ -28,8 +28,8 @@ def hurwicz_criteria(matrix: np.ndarray, factor: float,
         raise Exception("factor cannot be greater than 1!")
 
     factor_complement: float = 1 - factor
-    min_rows: Union[np.number, np.ndarray] = matrix.min(axis=1)
-    max_rows: Union[np.number, np.ndarray] = matrix.max(axis=1)
+    min_rows = matrix.min(axis=1)
+    max_rows = matrix.max(axis=1)
 
     if debug_mode:
         print("min_rows")
@@ -46,15 +46,13 @@ def hurwicz_criteria(matrix: np.ndarray, factor: float,
         print("max_rows after multiplication by the factor")
         print(max_rows)
 
-    summed_rows: Union[np.number[Any], np.ndarray] = np.array(
-        [min_rows, max_rows]
-    ).sum(axis=0)
+    summed_rows = min_rows + max_rows
 
     if debug_mode:
         print("summed_rows")
         print(summed_rows)
 
-    return summed_rows.argmax()
+    return int(summed_rows.argmax())
 
 
 # Bayes Laplace
@@ -71,7 +69,7 @@ def bayes_laplace_criteria(matrix: np.ndarray, probabilities: List[float],
 
     if debug_mode:
         print(columns_multiplied_summed)
-    return columns_multiplied_summed.argmax()
+    return int(columns_multiplied_summed.argmax())
 
 
 # Savage - jest błąd w wykładzie - strona 39 - [zbożę 4, normalne] - powinno byc 5 a nie 3
@@ -83,7 +81,7 @@ def savage_criteria(matrix: np.ndarray, debug_mode: bool = False) -> int:
         print(matrix_transposed)
         print(max_column_values)
 
-    relative_losses_matrix: List[Any] = []
+    relative_losses_matrix = []
     for row_index in range(len(matrix_transposed)):
         relative_losses_matrix.append([])
         for item_index in range(len(matrix_transposed[row_index])):
@@ -99,4 +97,4 @@ def savage_criteria(matrix: np.ndarray, debug_mode: bool = False) -> int:
         print(relative_losses_matrix)
         print(max_relative_losses_matrix)
 
-    return max_relative_losses_matrix.argmin()
+    return int(max_relative_losses_matrix.argmin())
