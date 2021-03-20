@@ -1,5 +1,7 @@
 import subprocess
 import sys
+import argparse
+import numpy as np
 
 """
 """
@@ -9,10 +11,21 @@ import sys
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
+    args = prepare_args()
+    chosen_matrix: np.ndarray = np.loadtxt(args.filename, str)
+    print("chosen_matrix")
+    print(chosen_matrix)
+
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
+def prepare_args() -> argparse.Namespace:
+    arg_parser = argparse.ArgumentParser()
+    arg_parser.add_argument('-f', '--filename', type=str)
+
+    return arg_parser.parse_args()
+
 
 # UTIL ----------------------------------------------------------------------- #
 def check_types_check_style() -> None:
