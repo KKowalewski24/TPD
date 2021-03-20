@@ -5,5 +5,7 @@
 
 #### Install Dependencies
 Go to chosen task and in main directory run
-```pip install -r requirements.txt```
+```
+pip install -r requirements.txt
+```
 Addition dependencies add to requirements.txt file and run above comment
