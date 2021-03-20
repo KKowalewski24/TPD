@@ -1,6 +1,7 @@
 import subprocess
 import sys
-import argparse
+from argparse import ArgumentParser, Namespace
+
 import numpy as np
 
 """
@@ -20,8 +21,8 @@ def main() -> None:
 
 
 # DEF ------------------------------------------------------------------------ #
-def prepare_args() -> argparse.Namespace:
-    arg_parser = argparse.ArgumentParser()
+def prepare_args() -> Namespace:
+    arg_parser = ArgumentParser()
     arg_parser.add_argument('-f', '--filename', type=str)
 
     return arg_parser.parse_args()
