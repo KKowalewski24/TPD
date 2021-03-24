@@ -6,7 +6,7 @@ import numpy as np
 from typing import Tuple, List
 
 from module.functions import min_max_by_columns, max_min_by_rows, has_saddle_point, \
-    is_fair_play_game
+    is_fair_play_game, reduce_rows_cols_in_matrix
 
 """
 """
@@ -18,19 +18,19 @@ from module.functions import min_max_by_columns, max_min_by_rows, has_saddle_poi
 def main() -> None:
     args = prepare_args()
     # TODO FIX ISSUE WITH READING 'A' FROM MATRIX
-    chosen_matrix: np.ndarray = np.loadtxt(args.filename)
-    print("chosen_matrix")
-    print(chosen_matrix)
+    primary_matrix: np.ndarray = np.loadtxt(args.filename)
+    print("primary_matrix")
+    print(primary_matrix)
 
-    process_calculations(chosen_matrix)
-
+    process_calculations(primary_matrix)
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
-def process_calculations(matrix: np.ndarray) -> None:
-    player_a: Tuple[int, int] = max_min_by_rows(matrix)
-    player_b: Tuple[int, int] = min_max_by_columns(matrix)
+def process_calculations(primary_matrix: np.ndarray) -> None:
+    player_a: Tuple[int, int] = max_min_by_rows(primary_matrix)
+    player_b: Tuple[int, int] = min_max_by_columns(primary_matrix)
+
     if has_saddle_point(player_a[1], player_b[1]):
         print_result_saddle_point(
             ["A", "B"], [player_a[0], player_b[0]],
@@ -39,6 +39,7 @@ def process_calculations(matrix: np.ndarray) -> None:
         return
 
     # TODO ADD NEXT STEPS
+    reduced_matrix: np.ndarray = reduce_rows_cols_in_matrix(primary_matrix)
 
 
 def print_result_saddle_point(player_ids: List[str], strategy_numbers: List[int],

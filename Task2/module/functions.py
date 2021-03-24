@@ -23,3 +23,12 @@ def is_fair_play_game(first_value: int, second_value: int) -> bool:
     if first_value == 0 and second_value == 0:
         return True
     return False
+
+
+def reduce_rows_cols_in_matrix(primary_matrix: np.ndarray) -> np.ndarray:
+    rows_number = primary_matrix.shape[0]
+    cols_number = primary_matrix.shape[1]
+
+    reduced_matrix: np.ndarray = np.ndarray([])
+
+    return reduced_matrix
