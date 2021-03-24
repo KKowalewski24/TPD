@@ -5,7 +5,8 @@ from argparse import ArgumentParser, Namespace
 import numpy as np
 from typing import Tuple, List
 
-from module.functions import min_max_by_columns, max_min_by_rows, has_saddle_point
+from module.functions import min_max_by_columns, max_min_by_rows, has_saddle_point, \
+    is_fair_play_game
 
 """
 """
@@ -30,17 +31,24 @@ def main() -> None:
 def process_calculations(matrix: np.ndarray) -> None:
     player_a: Tuple[int, int] = max_min_by_rows(matrix)
     player_b: Tuple[int, int] = min_max_by_columns(matrix)
-    if has_saddle_point(player_a[1], (player_b[1])):
-        print_result_saddle_point(["A", "B"], [player_a[0], player_b[0]])
+    if has_saddle_point(player_a[1], player_b[1]):
+        print_result_saddle_point(
+            ["A", "B"], [player_a[0], player_b[0]],
+            is_fair_play_game(player_a[1], player_b[1])
+        )
         return
 
     # TODO ADD NEXT STEPS
 
 
-def print_result_saddle_point(player_ids: List[str], strategy_numbers: List[int]) -> None:
-    print("\nGame Has Saddle Point !!!")
+def print_result_saddle_point(player_ids: List[str], strategy_numbers: List[int],
+                              is_fair_play: bool) -> None:
     if len(player_ids) != len(strategy_numbers) or len(player_ids) != 2:
         raise Exception("Lists must have equal length and length must be equals 2!!!")
+
+    print("\nGame Has Saddle Point !!!")
+    if is_fair_play:
+        print("Game is fair play ==> V==0")
 
     for index in range(len(player_ids)):
         print("Player " + player_ids[index]

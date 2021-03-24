@@ -17,3 +17,9 @@ def has_saddle_point(first_value: int, second_value: int) -> bool:
     if first_value == second_value:
         return True
     return False
+
+
+def is_fair_play_game(first_value: int, second_value: int) -> bool:
+    if first_value == 0 and second_value == 0:
+        return True
+    return False
