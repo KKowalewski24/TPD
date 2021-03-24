@@ -39,8 +39,8 @@ def process_calculations(matrix: np.ndarray) -> None:
 
 def print_result_saddle_point(player_ids: List[str], strategy_numbers: List[int]) -> None:
     print("\nGame Has Saddle Point !!!")
-    if len(player_ids) != len(strategy_numbers):
-        raise Exception("Lists must have equal length!!!")
+    if len(player_ids) != len(strategy_numbers) or len(player_ids) != 2:
+        raise Exception("Lists must have equal length and length must be equals 2!!!")
 
     for index in range(len(player_ids)):
         print("Player " + player_ids[index]
