@@ -34,21 +34,31 @@ def reduce_rows_cols_in_matrix(primary_matrix: np.ndarray) -> np.ndarray:
         for j in range(rows_number):
             if i != j:
                 if (primary_matrix[i] <= primary_matrix[j]).all() \
-                        and is_dominated_row(primary_matrix[i], primary_matrix[j]):
+                        and has_smaller_item_in_row(primary_matrix[i], primary_matrix[j]):
                     print(primary_matrix[i])
+                    print()
+
+    for i in range(cols_number):
+        for j in range(cols_number):
+            if i != j:
+                if (primary_matrix[:, i] >= primary_matrix[:, j]).all() \
+                        and has_bigger_item_in_column(primary_matrix[i],
+                                                      primary_matrix[j]):
+                    print(primary_matrix[:, i])
                     print()
 
     return reduced_matrix
 
 
-def is_dominated_row(row_to_check: np.ndarray, other_row: np.ndarray) -> bool:
+def has_smaller_item_in_row(row_to_check: np.ndarray, other_row: np.ndarray) -> bool:
     if len(row_to_check) != len(other_row):
         raise Exception("Lists must have equal length")
 
     return (row_to_check < other_row).any()
 
 
-def is_dominated_column(column_to_check: np.ndarray, other_column: np.ndarray) -> bool:
+def has_bigger_item_in_column(column_to_check: np.ndarray,
+                              other_column: np.ndarray) -> bool:
     if len(column_to_check) != len(other_column):
         raise Exception("Lists must have equal length")
 
