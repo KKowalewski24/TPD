@@ -1,3 +1,5 @@
+from typing import List
+
 import numpy as np
 
 
@@ -5,7 +7,6 @@ def reduce_rows_cols_in_matrix(primary_matrix: np.ndarray) -> np.ndarray:
     rows_number = primary_matrix.shape[0]
     cols_number = primary_matrix.shape[1]
 
-    reduced_matrix: np.ndarray = np.ndarray([])
     for i in range(rows_number):
         for j in range(rows_number):
             if i != j:
@@ -23,7 +24,19 @@ def reduce_rows_cols_in_matrix(primary_matrix: np.ndarray) -> np.ndarray:
                     print(primary_matrix[:, i])
                     print()
 
-    return reduced_matrix
+    return np.ndarray([])
+
+
+def get_row_numbers_to_delete(primary_matrix: np.ndarray, rows_number: int) -> List[int]:
+    row_numbers_to_delete: List[int] = []
+
+    return row_numbers_to_delete
+
+
+def get_cols_numbers_to_delete(primary_matrix: np.ndarray, cols_number: int) -> List[int]:
+    cols_numbers_to_delete: List[int] = []
+
+    return cols_numbers_to_delete
 
 
 def has_smaller_item_in_row(row_to_check: np.ndarray, other_row: np.ndarray) -> bool:
