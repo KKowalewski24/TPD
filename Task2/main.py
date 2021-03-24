@@ -1,12 +1,13 @@
 import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
+from typing import List, Tuple
 
 import numpy as np
-from typing import Tuple, List
 
-from module.functions import min_max_by_columns, max_min_by_rows, has_saddle_point, \
-    is_fair_play_game, reduce_rows_cols_in_matrix
+from module.functions import has_saddle_point, is_fair_play_game, max_min_by_rows, \
+    min_max_by_columns
+from module.matrix_reducer import reduce_rows_cols_in_matrix
 
 """
 """
