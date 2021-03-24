@@ -3,6 +3,9 @@ import sys
 from argparse import ArgumentParser, Namespace
 
 import numpy as np
+from typing import Tuple, List
+
+from module.functions import min_max_by_columns, max_min_by_rows, has_saddle_point
 
 """
 """
@@ -13,17 +16,40 @@ import numpy as np
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
     args = prepare_args()
-    chosen_matrix: np.ndarray = np.loadtxt(args.filename, str)
+    # TODO FIX ISSUE WITH READING 'A' FROM MATRIX
+    chosen_matrix: np.ndarray = np.loadtxt(args.filename)
     print("chosen_matrix")
     print(chosen_matrix)
+
+    process_calculations(chosen_matrix)
 
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
+def process_calculations(matrix: np.ndarray) -> None:
+    player_a: Tuple[int, int] = max_min_by_rows(matrix)
+    player_b: Tuple[int, int] = min_max_by_columns(matrix)
+    if has_saddle_point(player_a[1], (player_b[1])):
+        print_result_saddle_point(["A", "B"], [player_a[0], player_b[0]])
+        return
+
+    # TODO ADD NEXT STEPS
+
+
+def print_result_saddle_point(player_ids: List[str], strategy_numbers: List[int]) -> None:
+    print("\nGame Has Saddle Point !!!")
+    if len(player_ids) != len(strategy_numbers):
+        raise Exception("Lists must have equal length!!!")
+
+    for index in range(len(player_ids)):
+        print("Player " + player_ids[index]
+              + ", Strategy order number: " + str(strategy_numbers[index] + 1))
+
+
 def prepare_args() -> Namespace:
     arg_parser = ArgumentParser()
-    arg_parser.add_argument('-f', '--filename', type=str)
+    arg_parser.add_argument('-f', '--filename', required=True, type=str)
 
     return arg_parser.parse_args()
 
