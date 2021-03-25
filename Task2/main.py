@@ -8,6 +8,7 @@ import numpy as np
 from module.functions import has_saddle_point, is_fair_play_game, max_min_by_rows, \
     min_max_by_columns
 from module.matrix_reducer import reduce_rows_cols_in_matrix
+from module.test_matrix_param import test_different_matrix_param
 
 """
 """
@@ -18,17 +19,21 @@ from module.matrix_reducer import reduce_rows_cols_in_matrix
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
     args = prepare_args()
-    # TODO FIX ISSUE WITH READING 'A' FROM MATRIX
     primary_matrix: np.ndarray = np.loadtxt(args.filename)
     print("primary_matrix")
     print(primary_matrix)
 
-    process_calculations(primary_matrix)
+    if not args.test:
+        process_calculations(primary_matrix)
+    else:
+        test_different_matrix_param(primary_matrix, -100, 101, 4)
+
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
 def process_calculations(primary_matrix: np.ndarray) -> None:
+    # TODO FIX ISSUE WITH READING 'A' FROM MATRIX
     player_a: Tuple[int, int] = max_min_by_rows(primary_matrix)
     player_b: Tuple[int, int] = min_max_by_columns(primary_matrix)
 
@@ -59,7 +64,13 @@ def print_result_saddle_point(player_ids: List[str], strategy_numbers: List[int]
 
 def prepare_args() -> Namespace:
     arg_parser = ArgumentParser()
-    arg_parser.add_argument('-f', '--filename', required=True, type=str)
+    arg_parser.add_argument(
+        '-f', '--filename', required=True, type=str, help="Filename of matrix"
+    )
+    arg_parser.add_argument(
+        "-t", "--test", default=False, action="store_true",
+        help="Test different params marked as letter in passed matrix"
+    )
 
     return arg_parser.parse_args()
 
