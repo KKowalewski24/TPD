@@ -32,11 +32,13 @@ def main() -> None:
 
 
 # DEF ------------------------------------------------------------------------ #
-def process_calculations(matrix: np.ndarray, substitute_value: int) -> None:
-    primary_matrix = substitute_letter_and_convert_to_numeric(matrix, substitute_value)
+def process_calculations(matrix: np.ndarray, substituted_value: int) -> None:
+    substituted_matrix = substitute_letter_and_convert_to_numeric(
+        matrix, substituted_value
+    )
 
-    player_a: Tuple[int, int] = max_min_by_rows(primary_matrix)
-    player_b: Tuple[int, int] = min_max_by_columns(primary_matrix)
+    player_a: Tuple[int, int] = max_min_by_rows(substituted_matrix)
+    player_b: Tuple[int, int] = min_max_by_columns(substituted_matrix)
 
     if has_saddle_point(player_a[1], player_b[1]):
         print_result_saddle_point(
@@ -46,7 +48,7 @@ def process_calculations(matrix: np.ndarray, substitute_value: int) -> None:
         return
 
     # TODO ADD NEXT STEPS
-    reduced_matrix: np.ndarray = reduce_rows_cols_in_matrix(primary_matrix)
+    reduced_matrix: np.ndarray = reduce_rows_cols_in_matrix(substituted_matrix)
 
 
 def print_result_saddle_point(player_ids: List[str], strategy_numbers: List[int],

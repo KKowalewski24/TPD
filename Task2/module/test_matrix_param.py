@@ -24,14 +24,14 @@ def test_different_matrix_param(matrix: np.ndarray, substitute_value: int,
     )
 
 
-def test_saddle_point(primary_matrix: np.ndarray, substitute_value: int,
+def test_saddle_point(matrix: np.ndarray, substitute_value: int,
                       range_begin: int, range_end: int) -> List[int]:
     param_values_for_saddle_point: List[int] = []
 
     for index in range(range_begin, range_end):
         # TODO ADD REPLACING 'A' WITH INDEX VALUE
-        player_a: Tuple[int, int] = max_min_by_rows(primary_matrix)
-        player_b: Tuple[int, int] = min_max_by_columns(primary_matrix)
+        player_a: Tuple[int, int] = max_min_by_rows(matrix)
+        player_b: Tuple[int, int] = min_max_by_columns(matrix)
 
         if has_saddle_point(player_a[1], player_b[1]):
             param_values_for_saddle_point.append(index)
@@ -39,12 +39,12 @@ def test_saddle_point(primary_matrix: np.ndarray, substitute_value: int,
     return param_values_for_saddle_point
 
 
-def test_mixed_strategies(primary_matrix: np.ndarray, substitute_value: int,
+def test_mixed_strategies(matrix: np.ndarray, substitute_value: int,
                           range_begin: int, range_end: int) -> List[int]:
     param_values_for_mixed_strategies: List[int] = []
 
     for index in range(range_begin, range_end):
-        reduced_matrix: np.ndarray = reduce_rows_cols_in_matrix(primary_matrix)
+        reduced_matrix: np.ndarray = reduce_rows_cols_in_matrix(matrix)
         # TODO ADD REPLACING 'A' WITH INDEX VALUE
         # TODO ADD NEXT STEPS
 
