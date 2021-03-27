@@ -72,7 +72,7 @@ def prepare_args() -> Namespace:
         '-f', '--filename', required=True, type=str, help="Filename of matrix"
     )
     arg_parser.add_argument(
-        "-s", "--substitute", required=True, type=int,
+        "-s", "--substitute", type=int,
         help="Value to substitute letter in chosen matrix"
     )
     arg_parser.add_argument(

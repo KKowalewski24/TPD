@@ -42,8 +42,8 @@ def test_mixed_strategies(matrix: np.ndarray, range_begin: int,
     param_values_for_mixed_strategies: List[int] = []
 
     for index in range(range_begin, range_end):
-        reduced_matrix: np.ndarray = reduce_rows_cols_in_matrix(matrix)
-        # TODO ADD REPLACING 'A' WITH INDEX VALUE
+        substituted_matrix = substitute_letter_and_convert_to_numeric(matrix, index)
+        reduced_matrix: np.ndarray = reduce_rows_cols_in_matrix(substituted_matrix)
         # TODO ADD NEXT STEPS
 
     return param_values_for_mixed_strategies
@@ -54,8 +54,8 @@ def test_average_win_value(matrix: np.ndarray, range_begin: int, range_end: int,
     param_values_for_average_win: List[int] = []
 
     for index in range(range_begin, range_end):
-        reduced_matrix: np.ndarray = reduce_rows_cols_in_matrix(matrix)
-        # TODO ADD REPLACING 'A' WITH INDEX VALUE
+        substituted_matrix = substitute_letter_and_convert_to_numeric(matrix, index)
+        reduced_matrix: np.ndarray = reduce_rows_cols_in_matrix(substituted_matrix)
         # TODO ADD NEXT STEPS
         # TODO ADD CALL check_if_has_average_win
 
