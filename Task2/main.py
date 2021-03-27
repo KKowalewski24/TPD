@@ -6,7 +6,7 @@ from typing import List, Tuple
 import numpy as np
 
 from module.functions import has_saddle_point, is_fair_play_game, max_min_by_rows, \
-    min_max_by_columns
+    min_max_by_columns, substitute_letter_and_convert_to_numeric
 from module.matrix_reducer import reduce_rows_cols_in_matrix
 from module.test_matrix_param import test_different_matrix_param
 
@@ -19,21 +19,22 @@ from module.test_matrix_param import test_different_matrix_param
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
     args = prepare_args()
-    primary_matrix: np.ndarray = np.loadtxt(args.filename)
-    print("primary_matrix")
-    print(primary_matrix)
+    matrix: np.ndarray = np.loadtxt(args.filename, dtype=str)
+    print("matrix before substitution")
+    print(matrix)
 
     if not args.test:
-        process_calculations(primary_matrix)
+        process_calculations(matrix, args.substitute)
     else:
-        test_different_matrix_param(primary_matrix, -100, 101, 4)
+        test_different_matrix_param(matrix, args.substitute, -100, 101, 4)
 
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
-def process_calculations(primary_matrix: np.ndarray) -> None:
-    # TODO FIX ISSUE WITH READING 'A' FROM MATRIX
+def process_calculations(matrix: np.ndarray, substitute_value: int) -> None:
+    primary_matrix = substitute_letter_and_convert_to_numeric(matrix, substitute_value)
+
     player_a: Tuple[int, int] = max_min_by_rows(primary_matrix)
     player_b: Tuple[int, int] = min_max_by_columns(primary_matrix)
 
@@ -64,8 +65,13 @@ def print_result_saddle_point(player_ids: List[str], strategy_numbers: List[int]
 
 def prepare_args() -> Namespace:
     arg_parser = ArgumentParser()
+    # todo add grouping args
     arg_parser.add_argument(
         '-f', '--filename', required=True, type=str, help="Filename of matrix"
+    )
+    arg_parser.add_argument(
+        "-s", "--substitute", required=True, type=int,
+        help="Value to substitute letter in chosen matrix"
     )
     arg_parser.add_argument(
         "-t", "--test", default=False, action="store_true",
