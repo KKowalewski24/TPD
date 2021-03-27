@@ -6,14 +6,25 @@ from module.functions import has_saddle_point, max_min_by_rows, min_max_by_colum
 from module.matrix_reducer import reduce_rows_cols_in_matrix
 
 
-def test_different_matrix_param(primary_matrix: np.ndarray, range_begin: int,
-                                range_end: int, average_win: int) -> None:
-    display_params(test_saddle_point(primary_matrix, range_begin, range_end))
-    display_params(test_mixed_strategies(primary_matrix, range_begin, range_end))
-    # TODO ADD USAGE OF check_if_has_average_win
+def test_different_matrix_param(matrix: np.ndarray, substitute_value: int,
+                                range_begin: int, range_end: int,
+                                average_win_value: int) -> None:
+    display_params(
+        "Saddle Point",
+        test_saddle_point(matrix, substitute_value, range_begin, range_end)
+    )
+    display_params(
+        "Mixed Strategy",
+        test_mixed_strategies(matrix, substitute_value, range_begin, range_end)
+    )
+    display_params(
+        "Average win for v=" + str(average_win_value),
+        test_average_win_value(matrix, substitute_value, range_begin, range_end,
+                               average_win_value)
+    )
 
 
-def test_saddle_point(primary_matrix: np.ndarray,
+def test_saddle_point(primary_matrix: np.ndarray, substitute_value: int,
                       range_begin: int, range_end: int) -> List[int]:
     param_values_for_saddle_point: List[int] = []
 
@@ -28,7 +39,7 @@ def test_saddle_point(primary_matrix: np.ndarray,
     return param_values_for_saddle_point
 
 
-def test_mixed_strategies(primary_matrix: np.ndarray,
+def test_mixed_strategies(primary_matrix: np.ndarray, substitute_value: int,
                           range_begin: int, range_end: int) -> List[int]:
     param_values_for_mixed_strategies: List[int] = []
 
@@ -38,6 +49,20 @@ def test_mixed_strategies(primary_matrix: np.ndarray,
         # TODO ADD NEXT STEPS
 
     return param_values_for_mixed_strategies
+
+
+def test_average_win_value(matrix: np.ndarray, substitute_value: int,
+                           range_begin: int, range_end: int,
+                           average_win_value: int) -> List[int]:
+    param_values_for_average_win: List[int] = []
+
+    for index in range(range_begin, range_end):
+        reduced_matrix: np.ndarray = reduce_rows_cols_in_matrix(matrix)
+        # TODO ADD REPLACING 'A' WITH INDEX VALUE
+        # TODO ADD NEXT STEPS
+        # TODO ADD CALL check_if_has_average_win
+
+    return param_values_for_average_win
 
 
 # '-' near value means opposite value
@@ -50,6 +75,7 @@ def check_if_has_average_win(player_a_value: int, player_b_value: int,
     return False
 
 
-def display_params(params: List[int]) -> None:
+def display_params(strategy_type: str, params: List[int]) -> None:
+    print(strategy_type)
     for param in params:
-        print(param)
+        print("Parameter A" + str(param), end=", ")
