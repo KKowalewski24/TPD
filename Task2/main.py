@@ -32,9 +32,9 @@ def main() -> None:
 
 
 # DEF ------------------------------------------------------------------------ #
-def process_calculations(matrix: np.ndarray, substituted_value: int) -> None:
+def process_calculations(matrix: np.ndarray, substitute_value: int) -> None:
     substituted_matrix = substitute_letter_and_convert_to_numeric(
-        matrix, substituted_value
+        matrix, substitute_value
     )
 
     player_a: Tuple[int, int] = max_min_by_rows(substituted_matrix)
