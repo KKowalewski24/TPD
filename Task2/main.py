@@ -67,15 +67,19 @@ def print_result_saddle_point(player_ids: List[str], strategy_numbers: List[int]
 
 def prepare_args() -> Namespace:
     arg_parser = ArgumentParser()
-    # todo add grouping args
-    arg_parser.add_argument(
+
+    general = arg_parser.add_argument_group("general")
+    basic = arg_parser.add_argument_group("basic")
+    testing = arg_parser.add_argument_group("testing")
+
+    general.add_argument(
         '-f', '--filename', required=True, type=str, help="Filename of matrix"
     )
-    arg_parser.add_argument(
+    basic.add_argument(
         "-s", "--substitute", type=int,
-        help="Value to substitute letter in chosen matrix"
+        help="Value to substitute letters in chosen matrix"
     )
-    arg_parser.add_argument(
+    testing.add_argument(
         "-p", "--param", default=False, action="store_true",
         help="Test different params marked as letter in passed matrix"
     )
