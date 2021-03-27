@@ -2,36 +2,34 @@ from typing import List, Tuple
 
 import numpy as np
 
-from module.functions import has_saddle_point, max_min_by_rows, min_max_by_columns
+from module.functions import has_saddle_point, max_min_by_rows, min_max_by_columns, \
+    substitute_letter_and_convert_to_numeric
 from module.matrix_reducer import reduce_rows_cols_in_matrix
 
 
-def test_different_matrix_param(matrix: np.ndarray, substitute_value: int,
-                                range_begin: int, range_end: int,
+def test_different_matrix_param(matrix: np.ndarray, range_begin: int, range_end: int,
                                 average_win_value: int) -> None:
     display_params(
         "Saddle Point",
-        test_saddle_point(matrix, substitute_value, range_begin, range_end)
+        test_saddle_point(matrix, range_begin, range_end)
     )
     display_params(
         "Mixed Strategy",
-        test_mixed_strategies(matrix, substitute_value, range_begin, range_end)
+        test_mixed_strategies(matrix, range_begin, range_end)
     )
     display_params(
         "Average win for v=" + str(average_win_value),
-        test_average_win_value(matrix, substitute_value, range_begin, range_end,
-                               average_win_value)
+        test_average_win_value(matrix, range_begin, range_end, average_win_value)
     )
 
 
-def test_saddle_point(matrix: np.ndarray, substitute_value: int,
-                      range_begin: int, range_end: int) -> List[int]:
+def test_saddle_point(matrix: np.ndarray, range_begin: int, range_end: int) -> List[int]:
     param_values_for_saddle_point: List[int] = []
 
     for index in range(range_begin, range_end):
-        # TODO ADD REPLACING 'A' WITH INDEX VALUE
-        player_a: Tuple[int, int] = max_min_by_rows(matrix)
-        player_b: Tuple[int, int] = min_max_by_columns(matrix)
+        substituted_matrix = substitute_letter_and_convert_to_numeric(matrix, index)
+        player_a: Tuple[int, int] = max_min_by_rows(substituted_matrix)
+        player_b: Tuple[int, int] = min_max_by_columns(substituted_matrix)
 
         if has_saddle_point(player_a[1], player_b[1]):
             param_values_for_saddle_point.append(index)
@@ -39,8 +37,8 @@ def test_saddle_point(matrix: np.ndarray, substitute_value: int,
     return param_values_for_saddle_point
 
 
-def test_mixed_strategies(matrix: np.ndarray, substitute_value: int,
-                          range_begin: int, range_end: int) -> List[int]:
+def test_mixed_strategies(matrix: np.ndarray, range_begin: int,
+                          range_end: int) -> List[int]:
     param_values_for_mixed_strategies: List[int] = []
 
     for index in range(range_begin, range_end):
@@ -51,8 +49,7 @@ def test_mixed_strategies(matrix: np.ndarray, substitute_value: int,
     return param_values_for_mixed_strategies
 
 
-def test_average_win_value(matrix: np.ndarray, substitute_value: int,
-                           range_begin: int, range_end: int,
+def test_average_win_value(matrix: np.ndarray, range_begin: int, range_end: int,
                            average_win_value: int) -> List[int]:
     param_values_for_average_win: List[int] = []
 
@@ -78,4 +75,4 @@ def check_if_has_average_win(player_a_value: int, player_b_value: int,
 def display_params(strategy_type: str, params: List[int]) -> None:
     print(strategy_type)
     for param in params:
-        print("Parameter A" + str(param), end=", ")
+        print("\tParameter A: " + str(param))

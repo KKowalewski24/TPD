@@ -26,7 +26,7 @@ def main() -> None:
     if not args.param:
         process_calculations(matrix, args.substitute)
     else:
-        test_different_matrix_param(matrix, args.substitute, -100, 101, 4)
+        test_different_matrix_param(matrix, -15, 16, 4)
 
     display_finish()
 
