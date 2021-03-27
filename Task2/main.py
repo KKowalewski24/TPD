@@ -23,7 +23,7 @@ def main() -> None:
     print("matrix before substitution")
     print(matrix)
 
-    if not args.test:
+    if not args.param:
         process_calculations(matrix, args.substitute)
     else:
         test_different_matrix_param(matrix, args.substitute, -100, 101, 4)
@@ -74,7 +74,7 @@ def prepare_args() -> Namespace:
         help="Value to substitute letter in chosen matrix"
     )
     arg_parser.add_argument(
-        "-t", "--test", default=False, action="store_true",
+        "-p", "--param", default=False, action="store_true",
         help="Test different params marked as letter in passed matrix"
     )
 
