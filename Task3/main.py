@@ -29,8 +29,11 @@ def prepare_args() -> Namespace:
     general = arg_parser.add_argument_group("general")
 
     general.add_argument(
-        '-f', '--filenames', required=True, type=str, action="store", nargs="*",
+        "-f", "--filenames", required=True, type=str, action="store", nargs="*",
         help="List of filenames of matrices"
+    )
+    general.add_argument(
+        "-dt", "--term", required=True, type=int, help="Value of directive term"
     )
 
     return arg_parser.parse_args()

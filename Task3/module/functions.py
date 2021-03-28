@@ -17,6 +17,7 @@ def get_character_by_index(index: int) -> str:
 
 
 def print_matrices(matrices: Dict[str, np.ndarray]) -> None:
+    print("Matrices from files")
     for matrix in matrices:
         print()
         print(matrix)
