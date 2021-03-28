@@ -11,6 +11,13 @@ from module.matrix_reducer import reduce_rows_cols_in_matrix
 from module.test_matrix_param import test_different_matrix_param
 
 """
+Sample usage:
+    Only substitution chosen value:
+        python main.py -f data\matrix_from_task.txt -s 5
+    Testing value to substitute: 
+        python main.py -f data\matrix_from_task.txt --test -b -20 -e 21 -w 6
+    Check available params
+        python main.py -h
 """
 
 
@@ -26,7 +33,7 @@ def main() -> None:
     if not args.test:
         process_calculations(matrix, args.substitute)
     else:
-        test_different_matrix_param(matrix, -15, 16, args.win)
+        test_different_matrix_param(matrix, args.begin, args.end, args.win)
 
     display_finish()
 
@@ -72,12 +79,18 @@ def prepare_args() -> Namespace:
         "-f", "--filename", required=True, type=str, help="Filename of matrix"
     )
     arg_parser.add_argument(
-        "-s", "--substitute", required=True, type=int,
+        "-s", "--substitute", type=int,
         help="Value to substitute letters in chosen matrix"
     )
     arg_parser.add_argument(
         "--test", default=False, action="store_true",
         help="Test different params marked as letter in passed matrix"
+    )
+    arg_parser.add_argument(
+        "-b", "--begin", type=int, help="Begin of substituted values"
+    )
+    arg_parser.add_argument(
+        "-e", "--end", type=int, help="End of substituted values"
     )
     arg_parser.add_argument(
         "-w", "--win", type=int, help="Average win value"
