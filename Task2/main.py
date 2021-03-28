@@ -23,10 +23,10 @@ def main() -> None:
     print("matrix before substitution")
     print(matrix)
 
-    if not args.param:
+    if not args.test:
         process_calculations(matrix, args.substitute)
     else:
-        test_different_matrix_param(matrix, -15, 16, 4)
+        test_different_matrix_param(matrix, -15, 16, args.win)
 
     display_finish()
 
@@ -68,20 +68,19 @@ def print_result_saddle_point(player_ids: List[str], strategy_numbers: List[int]
 def prepare_args() -> Namespace:
     arg_parser = ArgumentParser()
 
-    general = arg_parser.add_argument_group("general")
-    basic = arg_parser.add_argument_group("basic")
-    testing = arg_parser.add_argument_group("testing")
-
-    general.add_argument(
-        '-f', '--filename', required=True, type=str, help="Filename of matrix"
+    arg_parser.add_argument(
+        "-f", "--filename", required=True, type=str, help="Filename of matrix"
     )
-    basic.add_argument(
-        "-s", "--substitute", type=int,
+    arg_parser.add_argument(
+        "-s", "--substitute", required=True, type=int,
         help="Value to substitute letters in chosen matrix"
     )
-    testing.add_argument(
-        "-p", "--param", default=False, action="store_true",
+    arg_parser.add_argument(
+        "--test", default=False, action="store_true",
         help="Test different params marked as letter in passed matrix"
+    )
+    arg_parser.add_argument(
+        "-w", "--win", type=int, help="Average win value"
     )
 
     return arg_parser.parse_args()
