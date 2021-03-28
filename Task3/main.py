@@ -1,8 +1,11 @@
 import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
+from typing import Dict
 
 import numpy as np
+
+from module.functions import print_matrices, read_matrices
 
 """
 """
@@ -13,9 +16,8 @@ import numpy as np
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
     args = prepare_args()
-    matrix: np.ndarray = np.loadtxt(args.filename)
-    print("matrix")
-    print(matrix)
+    matrices: Dict[str, np.ndarray] = read_matrices(args.filenames)
+    print_matrices(matrices)
 
     display_finish()
 
@@ -27,7 +29,8 @@ def prepare_args() -> Namespace:
     general = arg_parser.add_argument_group("general")
 
     general.add_argument(
-        '-f', '--filename', required=True, type=str, help="Filename of matrix"
+        '-f', '--filenames', required=True, type=str, action="store", nargs="*",
+        help="List of filenames of matrices"
     )
 
     return arg_parser.parse_args()
