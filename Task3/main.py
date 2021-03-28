@@ -5,7 +5,7 @@ from typing import Dict
 
 import numpy as np
 
-from module.functions import print_matrices, read_matrices
+from module.reader import print_matrices, read_matrices
 
 """
 """
