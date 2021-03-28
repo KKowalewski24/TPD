@@ -2,9 +2,10 @@ from typing import List, Tuple
 
 import numpy as np
 
-from module.functions import has_saddle_point, max_min_by_rows, min_max_by_columns, \
-    substitute_letter_and_convert_to_numeric
 from module.matrix_reducer import reduce_rows_cols_in_matrix
+from module.saddle_point_solution import has_saddle_point, max_min_by_rows, \
+    min_max_by_columns
+from module.util import substitute_letter_and_convert_to_numeric
 
 
 def test_different_matrix_param(matrix: np.ndarray, range_begin: int, range_end: int,

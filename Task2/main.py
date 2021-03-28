@@ -5,10 +5,11 @@ from typing import List, Tuple
 
 import numpy as np
 
-from module.functions import has_saddle_point, is_fair_play_game, max_min_by_rows, \
-    min_max_by_columns, substitute_letter_and_convert_to_numeric
 from module.matrix_reducer import reduce_rows_cols_in_matrix
+from module.saddle_point_solution import has_saddle_point, is_fair_play_game, \
+    max_min_by_rows, min_max_by_columns
 from module.test_matrix_param import test_different_matrix_param
+from module.util import substitute_letter_and_convert_to_numeric
 
 """
 Sample usage:
@@ -74,7 +75,7 @@ def print_result_saddle_point(player_ids: List[str], strategy_numbers: List[int]
 
 def prepare_args() -> Namespace:
     arg_parser = ArgumentParser()
-
+    # TODO ADD SUBCOMMANDS
     arg_parser.add_argument(
         "-f", "--filename", required=True, type=str, help="Filename of matrix"
     )
