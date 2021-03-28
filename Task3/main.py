@@ -2,6 +2,8 @@ import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
 
+import numpy as np
+
 """
 """
 
@@ -10,6 +12,11 @@ from argparse import ArgumentParser, Namespace
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
+    args = prepare_args()
+    matrix: np.ndarray = np.loadtxt(args.filename)
+    print("matrix")
+    print(matrix)
+
     display_finish()
 
 
