@@ -51,7 +51,7 @@ def process_calculations(matrix: np.ndarray, substitute_value: float) -> None:
     if has_saddle_point(player_a[1], player_b[1]):
         print_result_saddle_point(
             ["A", "B"], [player_a[0], player_b[0]],
-            is_fair_play_game(player_a[1], player_b[1])
+            is_fair_play_game(player_a[1], player_b[1]), True
         )
         return
 
@@ -60,11 +60,13 @@ def process_calculations(matrix: np.ndarray, substitute_value: float) -> None:
 
 
 def print_result_saddle_point(player_ids: List[str], strategy_numbers: List[int],
-                              is_fair_play: bool) -> None:
+                              is_fair_play: bool = False,
+                              saddle_point: bool = False) -> None:
     if len(player_ids) != len(strategy_numbers) or len(player_ids) != 2:
         raise Exception("Lists must have equal length and length must be equals 2!!!")
 
-    print("\nGame Has Saddle Point !!!")
+    if saddle_point:
+        print("\nGame Has Saddle Point !!!")
     if is_fair_play:
         print("Game is fair play ==> V==0")
 
