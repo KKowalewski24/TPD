@@ -17,7 +17,7 @@ Sample usage:
     Only substitution chosen value:
         python main.py -f data/matrix_from_task.txt -s 5
     Testing value to substitute: 
-        python main.py -f data/matrix_from_task.txt --test -b -20 -e 21 -w 6
+        python main.py -f data/matrix_from_task.txt --test -b -20 -e 21 -w 4
     Check available params:
         python main.py -h
 """
@@ -50,7 +50,7 @@ def process_calculations(matrix: np.ndarray, substitute_value: float) -> None:
     player_b_strategy, player_b_game_value = min_max_by_columns(substituted_matrix)
 
     if has_saddle_point(player_a_game_value, player_b_game_value):
-        print_result(
+        print_result_saddle_point(
             ["A", "B"], [player_a_strategy, player_b_strategy],
             player_a_game_value, is_saddle_point=True,
             is_fair_play=is_fair_play_game(player_a_game_value, player_b_game_value)
@@ -58,11 +58,13 @@ def process_calculations(matrix: np.ndarray, substitute_value: float) -> None:
         return
 
     reduced_matrix: np.ndarray = reduce_rows_cols_in_matrix(substituted_matrix)
-    get_linear_solution(reduced_matrix)
+    player_a_value, player_b_value, game_value = get_linear_solution(reduced_matrix)
+    print_result_linear_solution(["A", "B"], [player_a_value, player_b_value], game_value)
 
 
-def print_result(player_ids: List[str], strategy_numbers: List[int], game_value: int,
-                 is_saddle_point: bool = False, is_fair_play: bool = False) -> None:
+def print_result_saddle_point(player_ids: List[str], strategy_numbers: List[int],
+                              game_value: int, is_saddle_point: bool = False,
+                              is_fair_play: bool = False) -> None:
     if len(player_ids) != len(strategy_numbers) or len(player_ids) != 2:
         raise Exception("Lists must have equal length and length must be equals 2!!!")
 
@@ -76,6 +78,19 @@ def print_result(player_ids: List[str], strategy_numbers: List[int], game_value:
     for index in range(len(player_ids)):
         print("Player " + player_ids[index]
               + ", Strategy order number: " + str(strategy_numbers[index] + 1))
+
+
+def print_result_linear_solution(player_ids: List[str], player_values: List[List[float]],
+                                 game_value: float) -> None:
+    if len(player_ids) != len(player_values) or len(player_ids) != 2:
+        raise Exception("Lists must have equal length and length must be equals 2!!!")
+
+    print("Game Value: " + str(game_value))
+
+    for i in range(len(player_ids)):
+        print("Player " + player_ids[i], end=": ")
+        [print(str(player_values[i][j]), end=", ") for j in range(len(player_values[i]))]
+        print()
 
 
 def prepare_args() -> Namespace:
