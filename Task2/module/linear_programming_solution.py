@@ -1,10 +1,10 @@
-from typing import Tuple
+from typing import List, Tuple
 
 import numpy as np
 from pulp import LpMaximize, LpMinimize, LpProblem, LpVariable, lpSum
 
 
-def get_linear_solution(matrix: np.ndarray) -> None:
+def get_linear_solution(matrix: np.ndarray) -> Tuple[List[float], List[float], float]:
     scaled_matrix, scale_value = scale_matrix(matrix)
     rows_number = scaled_matrix.shape[0]
     cols_number = scaled_matrix.shape[1]
@@ -32,16 +32,14 @@ def get_linear_solution(matrix: np.ndarray) -> None:
 
     problem_b.solve()
 
-    for variable in problem_a.variables():
-        print(variable, end=" = ")
-        print(variable.varValue)
-
-    for variable in problem_b.variables():
-        print(variable, end=" = ")
-        print(variable.varValue)
-
     game_value = 1 / sum([var.varValue for var in problem_a.variables()])
-    reverted_game_value = revert_scaling_game_value(game_value, scale_value)
+    reverted_game_value = round(revert_scaling_game_value(game_value, scale_value), 2)
+    player_a = [round(var.varValue * reverted_game_value, 2) for var in
+                problem_a.variables()]
+    player_b = [round(var.varValue * reverted_game_value, 2) for var in
+                problem_b.variables()]
+
+    return player_a, player_b, reverted_game_value
 
 
 def scale_matrix(matrix: np.ndarray) -> Tuple[np.ndarray, float]:
