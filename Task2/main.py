@@ -49,7 +49,7 @@ def process_calculations(matrix: np.ndarray, substitute_value: float) -> None:
     player_b: Tuple[int, int] = min_max_by_columns(substituted_matrix)
 
     if has_saddle_point(player_a[1], player_b[1]):
-        print_result_saddle_point(
+        print_result(
             ["A", "B"], [player_a[0], player_b[0]],
             is_fair_play_game(player_a[1], player_b[1]), True
         )
@@ -59,9 +59,8 @@ def process_calculations(matrix: np.ndarray, substitute_value: float) -> None:
     reduced_matrix: np.ndarray = reduce_rows_cols_in_matrix(substituted_matrix)
 
 
-def print_result_saddle_point(player_ids: List[str], strategy_numbers: List[int],
-                              is_fair_play: bool = False,
-                              saddle_point: bool = False) -> None:
+def print_result(player_ids: List[str], strategy_numbers: List[int],
+                 is_fair_play: bool = False, saddle_point: bool = False) -> None:
     if len(player_ids) != len(strategy_numbers) or len(player_ids) != 2:
         raise Exception("Lists must have equal length and length must be equals 2!!!")
 
