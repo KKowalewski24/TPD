@@ -1,3 +1,4 @@
+import math
 from typing import List, Tuple
 
 import numpy as np
@@ -60,7 +61,7 @@ def maximize_by_rows(matrix: np.ndarray, rows_number: int,
 
 
 def calculate_game_value(variables: List[float], scale_value: float) -> float:
-    game_value = 1 / sum(variables)
+    game_value = 1 / math.fsum(variables)
     if scale_value <= 0:
         game_value = game_value - abs(scale_value)
 

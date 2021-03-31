@@ -12,7 +12,7 @@ from module.util import substitute_letter_and_convert_to_numeric
 def test_different_matrix_param(matrix: np.ndarray, range_begin: int, range_end: int,
                                 average_win_value: int) -> None:
     saddle_points, mixed_strategies, average_wins = test_saddle_point(
-        matrix, range_begin, range_end
+        matrix, range_begin, range_end, average_win_value
     )
 
     display_params("Saddle Point", saddle_points)
@@ -21,7 +21,8 @@ def test_different_matrix_param(matrix: np.ndarray, range_begin: int, range_end:
 
 
 def test_saddle_point(matrix: np.ndarray, range_begin: int,
-                      range_end: int) -> Tuple[List[int], List[int], List[int]]:
+                      range_end: int,
+                      average_win_value: int) -> Tuple[List[int], List[int], List[int]]:
     params_saddle_point: List[int] = []
     params_mixed_strategies: List[int] = []
     params_average_win: List[int] = []
@@ -36,8 +37,11 @@ def test_saddle_point(matrix: np.ndarray, range_begin: int,
             continue
 
         reduced_matrix: np.ndarray = reduce_rows_cols_in_matrix(substituted_matrix)
-        # TODO FINISH HERE
-        print(get_linear_solution(reduced_matrix))
+        _, _, game_value = get_linear_solution(reduced_matrix)
+        params_mixed_strategies.append(index)
+
+        if game_value == average_win_value:
+            params_average_win.append(index)
 
     return params_saddle_point, params_mixed_strategies, params_average_win
 
