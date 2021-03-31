@@ -45,7 +45,7 @@ def get_linear_solution(matrix: np.ndarray) -> None:
 
 
 def scale_matrix(matrix: np.ndarray) -> Tuple[np.ndarray, float]:
-    min_value_in_matrix = matrix.min()
+    min_value_in_matrix = float(matrix.min())
     if min_value_in_matrix <= 0:
         matrix = matrix + abs(min_value_in_matrix)
 
