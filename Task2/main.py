@@ -5,6 +5,7 @@ from typing import List, Tuple
 
 import numpy as np
 
+from module.linear_programming_solution import get_linear_solution
 from module.matrix_reducer import reduce_rows_cols_in_matrix
 from module.saddle_point_solution import has_saddle_point, is_fair_play_game, \
     max_min_by_rows, min_max_by_columns
@@ -55,8 +56,8 @@ def process_calculations(matrix: np.ndarray, substitute_value: float) -> None:
         )
         return
 
-    # TODO ADD NEXT STEPS
     reduced_matrix: np.ndarray = reduce_rows_cols_in_matrix(substituted_matrix)
+    get_linear_solution(reduced_matrix)
 
 
 def print_result(player_ids: List[str], strategy_numbers: List[int],
