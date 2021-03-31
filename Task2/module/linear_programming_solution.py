@@ -2,7 +2,11 @@ import math
 from typing import List, Tuple
 
 import numpy as np
-from pulp import LpMaximize, LpMinimize, LpProblem, LpVariable, lpSum
+from pulp import LpMaximize, LpMinimize, LpProblem, LpVariable, lpSum, PULP_CBC_CMD
+
+'''
+In order to enable logging to console, remove PULP_CBC_CMD(msg=False) from solve function
+'''
 
 
 def get_linear_solution(matrix: np.ndarray) -> Tuple[List[float], List[float], float]:
@@ -39,7 +43,7 @@ def minimize_by_columns(matrix: np.ndarray, rows_number: int,
             [variables[j] * matrix[j, i] for j in range(len(matrix[:, i]))]
         ) >= 1
 
-    problem.solve()
+    problem.solve(PULP_CBC_CMD(msg=False))
 
     return [var.varValue for var in problem.variables()]
 
@@ -55,7 +59,7 @@ def maximize_by_rows(matrix: np.ndarray, rows_number: int,
             [variables[j] * matrix[i, j] for j in range(len(matrix[i]))]
         ) <= 1
 
-    problem.solve()
+    problem.solve(PULP_CBC_CMD(msg=False))
 
     return [var.varValue for var in problem.variables()]
 
