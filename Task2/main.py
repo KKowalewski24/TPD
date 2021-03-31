@@ -1,7 +1,7 @@
 import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
-from typing import List, Tuple
+from typing import List
 
 import numpy as np
 
@@ -46,13 +46,13 @@ def process_calculations(matrix: np.ndarray, substitute_value: float) -> None:
         matrix, substitute_value
     )
 
-    player_a: Tuple[int, int] = max_min_by_rows(substituted_matrix)
-    player_b: Tuple[int, int] = min_max_by_columns(substituted_matrix)
+    player_a_strategy, player_a_game_value = max_min_by_rows(substituted_matrix)
+    player_b_strategy, player_b_game_value = min_max_by_columns(substituted_matrix)
 
-    if has_saddle_point(player_a[1], player_b[1]):
+    if has_saddle_point(player_a_game_value, player_b_game_value):
         print_result(
-            ["A", "B"], [player_a[0], player_b[0]],
-            is_fair_play_game(player_a[1], player_b[1]), True
+            ["A", "B"], [player_a_strategy, player_b_strategy],
+            is_fair_play_game(player_a_game_value, player_b_game_value), True
         )
         return
 
