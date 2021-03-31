@@ -12,12 +12,19 @@ def get_linear_solution(matrix: np.ndarray) -> Tuple[List[float], List[float], f
     a_problem_variables = minimize_by_columns(scaled_matrix, rows_number, cols_number)
     b_problem_variables = maximize_by_rows(scaled_matrix, rows_number, cols_number)
 
-    game_value = 1 / sum(a_problem_variables)
-    reverted_game_value = round(revert_scaling_game_value(game_value, scale_value), 2)
-    player_a = [round(var * reverted_game_value, 2) for var in a_problem_variables]
-    player_b = [round(var * reverted_game_value, 2) for var in b_problem_variables]
+    final_game_value = round(calculate_game_value(a_problem_variables, scale_value), 2)
+    player_a = [round(var * final_game_value, 2) for var in a_problem_variables]
+    player_b = [round(var * final_game_value, 2) for var in b_problem_variables]
 
-    return player_a, player_b, reverted_game_value
+    return player_a, player_b, final_game_value
+
+
+def scale_matrix(matrix: np.ndarray) -> Tuple[np.ndarray, float]:
+    min_value_in_matrix = float(matrix.min())
+    if min_value_in_matrix <= 0:
+        matrix = matrix + abs(min_value_in_matrix)
+
+    return matrix, min_value_in_matrix
 
 
 def minimize_by_columns(matrix: np.ndarray, rows_number: int,
@@ -52,15 +59,9 @@ def maximize_by_rows(matrix: np.ndarray, rows_number: int,
     return [var.varValue for var in problem.variables()]
 
 
-def scale_matrix(matrix: np.ndarray) -> Tuple[np.ndarray, float]:
-    min_value_in_matrix = float(matrix.min())
-    if min_value_in_matrix <= 0:
-        matrix = matrix + abs(min_value_in_matrix)
-
-    return matrix, min_value_in_matrix
-
-
-def revert_scaling_game_value(game_value: float, scale_value: float) -> float:
+def calculate_game_value(variables: List[float], scale_value: float) -> float:
+    game_value = 1 / sum(variables)
     if scale_value <= 0:
         game_value = game_value - abs(scale_value)
+
     return game_value
