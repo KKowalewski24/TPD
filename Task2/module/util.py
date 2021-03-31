@@ -5,7 +5,7 @@ import numpy as np
 
 # Function substitutes all letter from 'A' to 'Z' not only 'A' letter
 def substitute_letter_and_convert_to_numeric(matrix: np.ndarray,
-                                             substitute_value: int) -> np.ndarray:
+                                             substitute_value: float) -> np.ndarray:
     matrix = np.char.upper(matrix)
 
     for character in string.ascii_uppercase:

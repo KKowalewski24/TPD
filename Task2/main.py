@@ -14,10 +14,10 @@ from module.util import substitute_letter_and_convert_to_numeric
 """
 Sample usage:
     Only substitution chosen value:
-        python main.py -f data\matrix_from_task.txt -s 5
+        python main.py -f data/matrix_from_task.txt -s 5
     Testing value to substitute: 
-        python main.py -f data\matrix_from_task.txt --test -b -20 -e 21 -w 6
-    Check available params
+        python main.py -f data/matrix_from_task.txt --test -b -20 -e 21 -w 6
+    Check available params:
         python main.py -h
 """
 
@@ -40,7 +40,7 @@ def main() -> None:
 
 
 # DEF ------------------------------------------------------------------------ #
-def process_calculations(matrix: np.ndarray, substitute_value: int) -> None:
+def process_calculations(matrix: np.ndarray, substitute_value: float) -> None:
     substituted_matrix = substitute_letter_and_convert_to_numeric(
         matrix, substitute_value
     )
@@ -80,7 +80,7 @@ def prepare_args() -> Namespace:
         "-f", "--filename", required=True, type=str, help="Filename of matrix"
     )
     arg_parser.add_argument(
-        "-s", "--substitute", type=int,
+        "-s", "--substitute", type=float,
         help="Value to substitute letters in chosen matrix"
     )
     arg_parser.add_argument(
