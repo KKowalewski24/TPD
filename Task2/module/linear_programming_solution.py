@@ -6,18 +6,35 @@ from pulp import LpMaximize, LpMinimize, LpProblem, LpVariable, lpSum
 
 def get_linear_solution(matrix: np.ndarray) -> None:
     scaled_matrix, scale_value = scale_matrix(matrix)
+    rows_number = scaled_matrix.shape[0]
+    cols_number = scaled_matrix.shape[1]
 
-    variable_x = LpVariable("X", lowBound=0)
+    variable_x = [LpVariable("X" + str(index + 1), 0) for index in range(rows_number)]
     problem_a = LpProblem("A", LpMinimize)
     problem_a += lpSum(variable_x)
 
-    variable_y = LpVariable("Y", lowBound=0)
-    problem_b = LpProblem("B", LpMaximize)
-    problem_b += lpSum(variable_y)
+    for i in range(cols_number):
+        problem_a += lpSum(
+            [variable_x[j] * scaled_matrix[j, i] for j in range(len(scaled_matrix[:, i]))]
+        ) >= 1
 
-    # TODO CHANGE FOR REAL VALUE
-    game_value = 1
-    revert_scaling_game_value(game_value, scale_value)
+    problem_a.solve()
+
+    # variable_y = LpVariable("Y", lowBound=0)
+    # problem_b = LpProblem("B", LpMaximize)
+    # problem_b += lpSum(variable_y)
+    #
+    # for index in range(rows_number):
+    #     problem_b += lpSum([variable_y * item for item in scaled_matrix[index]]) <= 1
+    #
+    # problem_b.solve()
+
+    for variable in problem_a.variables():
+        print(variable)
+        print(variable.varValue)
+
+    game_value = 1 / sum([var.varValue for var in problem_a.variables()])
+    reverted_game_value = revert_scaling_game_value(game_value, scale_value)
 
 
 def scale_matrix(matrix: np.ndarray) -> Tuple[np.ndarray, float]:
