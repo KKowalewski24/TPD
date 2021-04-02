@@ -16,7 +16,7 @@ from module.util import substitute_letter_and_convert_to_numeric
 Sample usage:
     Only substitution chosen value:
         python main.py -f data/matrix_from_task.txt -s 5
-    Testing value to substitute: 
+    Testing value to substitute:
         python main.py -f data/matrix_from_task.txt --test -b -20 -e 21 -w 4
     Check available params:
         python main.py -h
@@ -29,7 +29,7 @@ Sample usage:
 def main() -> None:
     args = prepare_args()
     matrix: np.ndarray = np.loadtxt(args.filename, dtype=str)
-    print("matrix before substitution")
+    print("Matrix before substitution")
     print(matrix)
 
     if not args.test:
@@ -46,6 +46,9 @@ def process_calculations(matrix: np.ndarray, substitute_value: float) -> None:
         matrix, substitute_value
     )
 
+    print("Matrix after substitution")
+    print(substituted_matrix)
+
     player_a_strategy, player_a_game_value = max_min_by_rows(substituted_matrix)
     player_b_strategy, player_b_game_value = min_max_by_columns(substituted_matrix)
 
@@ -58,6 +61,10 @@ def process_calculations(matrix: np.ndarray, substitute_value: float) -> None:
         return
 
     reduced_matrix: np.ndarray = reduce_rows_cols_in_matrix(substituted_matrix)
+
+    print("Matrix after row and column reduction")
+    print(reduced_matrix)
+
     player_a_value, player_b_value, game_value = get_linear_solution(reduced_matrix)
     print_result_linear_solution(["A", "B"], [player_a_value, player_b_value], game_value)
 
@@ -89,7 +96,8 @@ def print_result_linear_solution(player_ids: List[str], player_values: List[List
 
     for i in range(len(player_ids)):
         print("Player " + player_ids[i], end=": ")
-        [print(str(player_values[i][j]), end=", ") for j in range(len(player_values[i]))]
+        for j in range(len(player_values[i])):
+            print(str(player_values[i][j]), end=", ")
         print()
 
 
