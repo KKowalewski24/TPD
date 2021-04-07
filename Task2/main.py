@@ -9,17 +9,10 @@ from module.linear_programming_solution import get_linear_solution
 from module.matrix_reducer import reduce_rows_cols_in_matrix
 from module.saddle_point_solution import has_saddle_point, is_fair_play_game, \
     max_min_by_rows, min_max_by_columns
-from module.test_matrix_param import test_different_matrix_param
-from module.util import substitute_letter_and_convert_to_numeric
 
 """
 Sample usage:
-    Only substitution chosen value:
-        python main.py -f data/matrix_from_task.txt -s 5
-    Testing value to substitute:
-        python main.py -f data/matrix_from_task.txt --test -b -20 -e 21 -w 4
-    Check available params:
-        python main.py -h
+    python main.py -f data/matrix_from_task.txt
 """
 
 
@@ -28,29 +21,18 @@ Sample usage:
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
     args = prepare_args()
-    matrix: np.ndarray = np.loadtxt(args.filename, dtype=str)
-    print("Matrix before substitution")
+    matrix: np.ndarray = np.loadtxt(args.filename)
+    print("Matrix")
     print(matrix)
-
-    if not args.test:
-        process_calculations(matrix, args.substitute)
-    else:
-        test_different_matrix_param(matrix, args.begin, args.end, args.win)
+    process_calculations(matrix)
 
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
-def process_calculations(matrix: np.ndarray, substitute_value: float) -> None:
-    substituted_matrix = substitute_letter_and_convert_to_numeric(
-        matrix, substitute_value
-    )
-
-    print("Matrix after substitution")
-    print(substituted_matrix)
-
-    player_a_strategy, player_a_game_value = max_min_by_rows(substituted_matrix)
-    player_b_strategy, player_b_game_value = min_max_by_columns(substituted_matrix)
+def process_calculations(matrix: np.ndarray) -> None:
+    player_a_strategy, player_a_game_value = max_min_by_rows(matrix)
+    player_b_strategy, player_b_game_value = min_max_by_columns(matrix)
 
     if has_saddle_point(player_a_game_value, player_b_game_value):
         print_result_saddle_point(
@@ -60,7 +42,7 @@ def process_calculations(matrix: np.ndarray, substitute_value: float) -> None:
         )
         return
 
-    reduced_matrix: np.ndarray = reduce_rows_cols_in_matrix(substituted_matrix)
+    reduced_matrix: np.ndarray = reduce_rows_cols_in_matrix(matrix)
 
     print("Matrix after row and column reduction")
     print(reduced_matrix)
@@ -103,26 +85,8 @@ def print_result_linear_solution(player_ids: List[str], player_values: List[List
 
 def prepare_args() -> Namespace:
     arg_parser = ArgumentParser()
-    # TODO ADD SUBCOMMANDS
     arg_parser.add_argument(
         "-f", "--filename", required=True, type=str, help="Filename of matrix"
-    )
-    arg_parser.add_argument(
-        "-s", "--substitute", type=float,
-        help="Value to substitute letters in chosen matrix"
-    )
-    arg_parser.add_argument(
-        "--test", default=False, action="store_true",
-        help="Test different params marked as letter in passed matrix"
-    )
-    arg_parser.add_argument(
-        "-b", "--begin", type=int, help="Begin of substituted values"
-    )
-    arg_parser.add_argument(
-        "-e", "--end", type=int, help="End of substituted values"
-    )
-    arg_parser.add_argument(
-        "-w", "--win", type=int, help="Average win value"
     )
 
     return arg_parser.parse_args()
