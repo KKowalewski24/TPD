@@ -17,9 +17,10 @@ def get_linear_solution(matrix: np.ndarray) -> Tuple[List[float], List[float], f
     a_problem_variables = minimize_by_columns(scaled_matrix, rows_number, cols_number)
     b_problem_variables = maximize_by_rows(scaled_matrix, rows_number, cols_number)
 
+    game_value = 1 / math.fsum(a_problem_variables)
     final_game_value = round(calculate_game_value(a_problem_variables, scale_value), 2)
-    player_a = [round(var * final_game_value, 2) for var in a_problem_variables]
-    player_b = [round(var * final_game_value, 2) for var in b_problem_variables]
+    player_a = [round(var * game_value, 2) for var in a_problem_variables]
+    player_b = [round(var * game_value, 2) for var in b_problem_variables]
 
     return player_a, player_b, final_game_value
 
