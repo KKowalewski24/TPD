@@ -2,7 +2,7 @@ import math
 from typing import List, Tuple
 
 import numpy as np
-from pulp import LpMaximize, LpMinimize, LpProblem, LpVariable, lpSum, PULP_CBC_CMD
+from pulp import LpMaximize, LpMinimize, LpProblem, LpVariable, PULP_CBC_CMD, lpSum
 
 '''
 In order to enable logging to console, remove PULP_CBC_CMD(msg=False) from solve function
@@ -18,9 +18,9 @@ def get_linear_solution(matrix: np.ndarray) -> Tuple[List[float], List[float], f
     b_problem_variables = maximize_by_rows(scaled_matrix, rows_number, cols_number)
 
     game_value = 1 / math.fsum(a_problem_variables)
-    final_game_value = round(calculate_game_value(a_problem_variables, scale_value), 2)
     player_a = [round(var * game_value, 2) for var in a_problem_variables]
     player_b = [round(var * game_value, 2) for var in b_problem_variables]
+    final_game_value = round(calculate_game_value(game_value, scale_value), 2)
 
     return player_a, player_b, final_game_value
 
@@ -65,9 +65,9 @@ def maximize_by_rows(matrix: np.ndarray, rows_number: int,
     return [var.varValue for var in problem.variables()]
 
 
-def calculate_game_value(variables: List[float], scale_value: float) -> float:
-    game_value = 1 / math.fsum(variables)
+def calculate_game_value(game_value: float, scale_value: float) -> float:
+    final_game_value = game_value
     if scale_value <= 0:
-        game_value = game_value - abs(scale_value)
+        final_game_value = game_value - abs(scale_value)
 
-    return game_value
+    return final_game_value
