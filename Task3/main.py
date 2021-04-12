@@ -18,7 +18,7 @@ python main.py -f data/A_variant_matrix_from_task.csv data/B_variant_matrix_from
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
     args = prepare_args()
-    matrices: Dict[str, pd.DataFrame] = read_csv_matrices(args.filenames)
+    matrices: Dict[int, pd.DataFrame] = read_csv_matrices(args.filenames)
     print_matrices(matrices)
     display_finish()
 
