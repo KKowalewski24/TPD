@@ -3,11 +3,13 @@ import sys
 from argparse import ArgumentParser, Namespace
 from typing import Dict
 
-import numpy as np
+import pandas as pd
 
-from module.reader import print_matrices, read_matrices
+from module.reader import print_matrices, read_csv_matrices
 
 """
+python main.py -f data/A_variant_matrix_from_task.txt data/B_variant_matrix_from_task.txt -dt 48
+python main.py -f data/A_variant_matrix_from_task.csv data/B_variant_matrix_from_task.csv -dt 48
 """
 
 
@@ -16,9 +18,8 @@ from module.reader import print_matrices, read_matrices
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
     args = prepare_args()
-    matrices: Dict[str, np.ndarray] = read_matrices(args.filenames)
+    matrices: Dict[str, pd.DataFrame] = read_csv_matrices(args.filenames)
     print_matrices(matrices)
-
     display_finish()
 
 
