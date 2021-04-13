@@ -1,4 +1,4 @@
-from typing import Dict, List, Union
+from typing import Dict, List
 
 import numpy as np
 import pandas as pd
@@ -19,10 +19,3 @@ def read_matrices(filenames: List[str]) -> Dict[int, np.ndarray]:
         matrices[index] = np.loadtxt(filenames[index])
 
     return matrices
-
-
-def print_matrices(matrices: Union[Dict[int, np.ndarray], Dict[int, pd.DataFrame]]) -> None:
-    print("\nMatrices from files")
-    for matrix in matrices:
-        print("\n" + str(matrix))
-        print(matrices[matrix])

@@ -1,11 +1,13 @@
 import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
-from typing import Dict
+from typing import Dict, Union
 
+import numpy as np
 import pandas as pd
 
-from module.reader import print_matrices, read_csv_matrices
+from module.pert_solution import prepare_matrices
+from module.reader import read_csv_matrices
 
 """
 python main.py -f data/A_variant_matrix_from_task.txt data/B_variant_matrix_from_task.txt -dt 48
@@ -19,11 +21,21 @@ python main.py -f data/A_variant_matrix_from_task.csv data/B_variant_matrix_from
 def main() -> None:
     args = prepare_args()
     matrices: Dict[int, pd.DataFrame] = read_csv_matrices(args.filenames)
+    print("Base matrices")
     print_matrices(matrices)
+    print("Matrices after calculating time and variance")
+    print_matrices(prepare_matrices(matrices))
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
+def print_matrices(matrices: Union[Dict[int, np.ndarray], Dict[int, pd.DataFrame]]) -> None:
+    for matrix in matrices:
+        print("Matrix order number: " + str(matrix))
+        print(matrices[matrix])
+    print()
+
+
 def prepare_args() -> Namespace:
     arg_parser = ArgumentParser()
 
@@ -37,7 +49,7 @@ def prepare_args() -> Namespace:
         "-dt", "--term", type=float, help="Value of directive term"
     )
     general.add_argument(
-        "-pr", "--probability", type=float, help="Value of directive term"
+        "-pr", "--probability", type=float, help="Value of expected probability"
     )
 
     return arg_parser.parse_args()
