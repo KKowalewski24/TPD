@@ -34,7 +34,10 @@ def prepare_args() -> Namespace:
         help="List of filenames of matrices"
     )
     general.add_argument(
-        "-dt", "--term", required=True, type=int, help="Value of directive term"
+        "-dt", "--term", type=float, help="Value of directive term"
+    )
+    general.add_argument(
+        "-pr", "--probability", type=float, help="Value of directive term"
     )
 
     return arg_parser.parse_args()
