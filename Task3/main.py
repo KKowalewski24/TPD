@@ -25,7 +25,8 @@ def main() -> None:
     print_matrices(matrices)
 
     if args.term:
-        print("More probable variant: " + str(choose_more_probable_variant(args.term)))
+        print("More probable variant: "
+              + str(choose_more_probable_variant(matrices, args.term) + 1))
     elif args.probability:
         # TODO
         print("args.probability")
@@ -38,7 +39,7 @@ def main() -> None:
 # DEF ------------------------------------------------------------------------ #
 def print_matrices(matrices: Union[Dict[int, np.ndarray], Dict[int, pd.DataFrame]]) -> None:
     for matrix in matrices:
-        print("Matrix order number: " + str(matrix))
+        print("Matrix order number: " + str(matrix + 1))
         print(str(matrices[matrix]) + "\n")
 
 

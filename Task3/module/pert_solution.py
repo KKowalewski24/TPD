@@ -6,7 +6,7 @@ import pandas as pd
 def choose_more_probable_variant(matrices: Dict[int, pd.DataFrame], term: float) -> int:
     prepared_matrices: Dict[int, pd.DataFrame] = _prepare_matrices(matrices)
 
-    pass
+    return -5
 
 
 def _prepare_matrices(matrices: Dict[int, pd.DataFrame]) -> Dict[int, pd.DataFrame]:
