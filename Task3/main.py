@@ -6,7 +6,7 @@ from typing import Dict, Union
 import numpy as np
 import pandas as pd
 
-from module.pert_solution import choose_more_probable_variant
+from module.pert_solution import calculate_completion_time, calculate_probability_and_variant
 from module.reader import read_csv_matrices
 
 """
@@ -25,12 +25,13 @@ def main() -> None:
     print_matrices(matrices)
 
     if args.term:
-        probability, variant_number = choose_more_probable_variant(matrices, args.term)
+        probability, variant_number = calculate_probability_and_variant(matrices, args.term)
         print_result_for_term(probability, variant_number)
     elif args.probability:
         # TODO
         print("args.probability")
-        print_result_for_probability()
+        time = calculate_completion_time()
+        print_result_for_probability(time)
     else:
         raise Exception("term or probability must be passed !!!")
 
@@ -49,9 +50,8 @@ def print_result_for_term(probability: float, variant_number: int) -> None:
     print("More probable variant: " + str(variant_number + 1))
 
 
-def print_result_for_probability() -> None:
-    # TODO
-    pass
+def print_result_for_probability(time: float) -> None:
+    print("Project completion time: " + str(time))
 
 
 def prepare_args() -> Namespace:
