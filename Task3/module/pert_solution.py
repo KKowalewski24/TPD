@@ -3,7 +3,13 @@ from typing import Dict, List
 import pandas as pd
 
 
-def prepare_matrices(matrices: Dict[int, pd.DataFrame]) -> Dict[int, pd.DataFrame]:
+def choose_more_probable_variant(matrices: Dict[int, pd.DataFrame], term: float) -> int:
+    prepared_matrices: Dict[int, pd.DataFrame] = _prepare_matrices(matrices)
+
+    pass
+
+
+def _prepare_matrices(matrices: Dict[int, pd.DataFrame]) -> Dict[int, pd.DataFrame]:
     for i in range(len(matrices)):
         matrices[i]['time'] = matrices[i].iloc[:, 1:4].apply(_calculate_time, axis=1)
         matrices[i]['variance'] = matrices[i].iloc[:, [1, 3]].apply(_calculate_variance, axis=1)

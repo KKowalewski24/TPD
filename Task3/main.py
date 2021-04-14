@@ -6,12 +6,12 @@ from typing import Dict, Union
 import numpy as np
 import pandas as pd
 
-from module.pert_solution import prepare_matrices
+from module.pert_solution import choose_more_probable_variant
 from module.reader import read_csv_matrices
 
 """
-python main.py -f data/A_variant_matrix_from_task.txt data/B_variant_matrix_from_task.txt -dt 48
 python main.py -f data/A_variant_matrix_from_task.csv data/B_variant_matrix_from_task.csv -dt 48
+python main.py -f data/A_variant_matrix_from_task.csv data/B_variant_matrix_from_task.csv -pr 0.9
 """
 
 
@@ -23,8 +23,15 @@ def main() -> None:
     matrices: Dict[int, pd.DataFrame] = read_csv_matrices(args.filenames)
     print("Base matrices")
     print_matrices(matrices)
-    print("Matrices after calculating time and variance")
-    print_matrices(prepare_matrices(matrices))
+
+    if args.term:
+        print("More probable variant: " + str(choose_more_probable_variant(args.term)))
+    elif args.probability:
+        # TODO
+        print("args.probability")
+    else:
+        raise Exception("term or probability must be passed !!!")
+
     display_finish()
 
 
@@ -32,8 +39,7 @@ def main() -> None:
 def print_matrices(matrices: Union[Dict[int, np.ndarray], Dict[int, pd.DataFrame]]) -> None:
     for matrix in matrices:
         print("Matrix order number: " + str(matrix))
-        print(matrices[matrix])
-    print()
+        print(str(matrices[matrix]) + "\n")
 
 
 def prepare_args() -> Namespace:
