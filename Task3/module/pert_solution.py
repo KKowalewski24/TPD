@@ -1,18 +1,23 @@
 from typing import Dict, List, Tuple
 
 import pandas as pd
+from scipy.stats import norm
 
 
 def calculate_probability_and_variant(matrices: Dict[int, pd.DataFrame],
                                       expected_term: float) -> Tuple[float, int]:
-    prepared_matrices: Dict[int, pd.DataFrame] = _prepare_matrices(matrices)
-
+    print(norm.cdf(1.66))
     return -0.5, -5
 
 
 def calculate_completion_time() -> float:
     # TODO
+    print(norm.ppf(0.99))
     return -5.5
+
+
+def _calculate_time_and_std(matrices: Dict[int, pd.DataFrame]) -> Dict[int, Tuple[float, float]]:
+    prepared_matrices: Dict[int, pd.DataFrame] = _prepare_matrices(matrices)
 
 
 def _prepare_matrices(matrices: Dict[int, pd.DataFrame]) -> Dict[int, pd.DataFrame]:
