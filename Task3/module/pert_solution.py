@@ -1,12 +1,13 @@
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 import pandas as pd
 
 
-def choose_more_probable_variant(matrices: Dict[int, pd.DataFrame], term: float) -> int:
+def choose_more_probable_variant(matrices: Dict[int, pd.DataFrame],
+                                 term: float) -> Tuple[float, int]:
     prepared_matrices: Dict[int, pd.DataFrame] = _prepare_matrices(matrices)
 
-    return -5
+    return -0.5, -5
 
 
 def _prepare_matrices(matrices: Dict[int, pd.DataFrame]) -> Dict[int, pd.DataFrame]:

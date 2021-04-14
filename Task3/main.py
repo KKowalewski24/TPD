@@ -25,11 +25,12 @@ def main() -> None:
     print_matrices(matrices)
 
     if args.term:
-        print("More probable variant: "
-              + str(choose_more_probable_variant(matrices, args.term) + 1))
+        probability, variant_number = choose_more_probable_variant(matrices, args.term)
+        print_result_for_term(probability, variant_number)
     elif args.probability:
         # TODO
         print("args.probability")
+        print_result_for_probability()
     else:
         raise Exception("term or probability must be passed !!!")
 
@@ -41,6 +42,16 @@ def print_matrices(matrices: Union[Dict[int, np.ndarray], Dict[int, pd.DataFrame
     for matrix in matrices:
         print("Matrix order number: " + str(matrix + 1))
         print(str(matrices[matrix]) + "\n")
+
+
+def print_result_for_term(probability: float, variant_number: int) -> None:
+    print("Probability:" + str(probability))
+    print("More probable variant: " + str(variant_number + 1))
+
+
+def print_result_for_probability() -> None:
+    # TODO
+    pass
 
 
 def prepare_args() -> Namespace:
