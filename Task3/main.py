@@ -59,16 +59,14 @@ def print_result_for_probability(completion_times: Dict[int, float]) -> None:
 def prepare_args() -> Namespace:
     arg_parser = ArgumentParser()
 
-    general = arg_parser.add_argument_group("general")
-
-    general.add_argument(
+    arg_parser.add_argument(
         "-f", "--filenames", required=True, type=str, action="store", nargs="*",
         help="List of filenames of matrices"
     )
-    general.add_argument(
+    arg_parser.add_argument(
         "-dt", "--term", type=float, help="Value of directive term"
     )
-    general.add_argument(
+    arg_parser.add_argument(
         "-pr", "--probability", type=float, help="Value of expected probability"
     )
 
