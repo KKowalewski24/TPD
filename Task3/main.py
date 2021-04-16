@@ -44,7 +44,7 @@ def print_matrices(matrices: Union[Dict[int, np.ndarray], Dict[int, pd.DataFrame
 
 
 def print_result_for_term(probability: float, variant_number: int) -> None:
-    print("Probability:" + str(probability))
+    print("Probability:" + str(round(probability, 4)))
     print("More probable variant: " + str(variant_number + 1))
 
 
@@ -52,7 +52,7 @@ def print_result_for_probability(completion_times: Dict[int, float]) -> None:
     for completion_time in completion_times:
         print(
             "Project order number: " + str(completion_time + 1)
-            + ", Completion time: " + str(completion_times[completion_time])
+            + ", Completion time: " + str(round(completion_times[completion_time], 4))
         )
 
 
