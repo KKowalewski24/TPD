@@ -24,14 +24,14 @@ def main() -> None:
     print("Base matrices")
     print_matrices(matrices)
 
-    if args.term:
-        variant_number, probability = calculate_probability_and_variant(matrices, args.term)
+    if args.time:
+        variant_number, probability = calculate_probability_and_variant(matrices, args.time)
         print_result_for_term(probability, variant_number)
     elif args.probability:
         completion_times = calculate_completion_time(matrices, args.probability)
         print_result_for_probability(completion_times)
     else:
-        raise Exception("term or probability must be passed !!!")
+        raise Exception("time or probability must be passed !!!")
 
     display_finish()
 
@@ -64,7 +64,7 @@ def prepare_args() -> Namespace:
         help="List of filenames of matrices"
     )
     arg_parser.add_argument(
-        "-dt", "--term", type=float, help="Value of directive term"
+        "-dt", "--time", type=float, help="Value of directive time"
     )
     arg_parser.add_argument(
         "-pr", "--probability", type=float, help="Value of expected probability"
