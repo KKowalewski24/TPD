@@ -7,16 +7,18 @@ from scipy.stats import norm
 from module.cpm_solution import find_critical_path
 
 
+# Returns order number of more probable variant and probability value
 def calculate_probability_and_variant(matrices: Dict[int, pd.DataFrame],
-                                      expected_term: float) -> Tuple[float, int]:
+                                      expected_term: float) -> Tuple[int, float]:
     print(norm.cdf(1.66))
-    return -0.5, -5
+    return -5, -0.5
 
 
-def calculate_completion_time() -> float:
-    # TODO
+# Returns order number of matrix and time value for each
+def calculate_completion_time(matrices: Dict[int, pd.DataFrame],
+                              expected_probability: float) -> Dict[int, float]:
     print(norm.ppf(0.99))
-    return -5.5
+    return {-5: -0.5}
 
 
 # Returns Dict of matrix order number and tuple of summed time and standard deviation
@@ -39,6 +41,7 @@ def _calculate_time_and_std(matrices: Dict[int, pd.DataFrame]) -> Dict[int, Tupl
     return time_and_std
 
 
+# Returns original DataFrame with added two columns
 def _prepare_matrices(matrices: Dict[int, pd.DataFrame]) -> Dict[int, pd.DataFrame]:
     for i in range(len(matrices)):
         matrices[i]['time'] = matrices[i].iloc[:, 1:4].apply(_calculate_time_for_rows, axis=1)
