@@ -29,8 +29,22 @@ def calculate_probability_and_variant(matrices: Dict[int, pd.DataFrame],
 # Returns order number of matrix and time value for each
 def calculate_completion_time(matrices: Dict[int, pd.DataFrame],
                               expected_probability: float) -> Dict[int, float]:
-    print(norm.ppf(0.99))
-    return {-5: -0.5}
+    if expected_probability > 1:
+        raise Exception("Probability cannot be greater than 1")
+
+    times_and_stds: Dict[int, Tuple[float, float]] = _calculate_times_and_stds(matrices)
+    times: Dict[int, float] = {}
+
+    for time_and_std in times_and_stds:
+        time: float = times_and_stds[time_and_std][0]
+        std: float = times_and_stds[time_and_std][1]
+        if std == 0:
+            print("Std cannot be ZERO - Dividing by ZERO is forbidden")
+            continue
+
+        times[time_and_std] = (norm.ppf(expected_probability) * std) + time
+
+    return times
 
 
 # Returns Dict of matrix order number and tuple of summed time and standard deviation
