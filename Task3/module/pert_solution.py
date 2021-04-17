@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import norm
 
-from module.cpm_solution import find_critical_path
+from module.cpm_solution import find_critical_paths
 
 
 # Returns order number of more probable variant and probability value
@@ -50,7 +50,7 @@ def calculate_completion_time(matrices: Dict[int, pd.DataFrame],
 # Returns Dict of matrix order number and tuple of summed time and standard deviation
 def _calculate_times_and_stds(matrices: Dict[int, pd.DataFrame]) -> Dict[int, Tuple[float, float]]:
     prepared_matrices: Dict[int, pd.DataFrame] = _prepare_matrices(matrices)
-    critical_paths: Dict[int, List[int]] = find_critical_path(prepared_matrices)
+    critical_paths: Dict[int, List[int]] = find_critical_paths(prepared_matrices)
     times_and_stds: Dict[int, Tuple[float, float]] = {}
 
     # Iterate over matrices order number
