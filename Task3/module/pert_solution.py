@@ -56,11 +56,11 @@ def _calculate_times_and_stds(matrices: Dict[int, pd.DataFrame]) -> Dict[int, Tu
     # Iterate over matrices order number
     for critical_path in critical_paths:
         # Get times for critical path and sum them
-        time_sum: float = prepared_matrices[critical_path].iloc[:, 4][
+        time_sum: float = prepared_matrices[critical_path].iloc[:, 5][
             critical_paths[critical_path]].sum()
         # Get variance for critical path, sum them and calculate sqrt
         std: float = np.sqrt(
-            prepared_matrices[critical_path].iloc[:, 5][critical_paths[critical_path]].sum()
+            prepared_matrices[critical_path].iloc[:, 6][critical_paths[critical_path]].sum()
         )
         times_and_stds[critical_path] = (time_sum, std)
 
@@ -70,8 +70,8 @@ def _calculate_times_and_stds(matrices: Dict[int, pd.DataFrame]) -> Dict[int, Tu
 # Returns original DataFrame with added two columns
 def _prepare_matrices(matrices: Dict[int, pd.DataFrame]) -> Dict[int, pd.DataFrame]:
     for i in range(len(matrices)):
-        matrices[i]['time'] = matrices[i].iloc[:, 1:4].apply(_calculate_time_for_rows, axis=1)
-        matrices[i]['variance'] = matrices[i].iloc[:, [1, 3]].apply(
+        matrices[i]['time'] = matrices[i].iloc[:, 2:5].apply(_calculate_time_for_rows, axis=1)
+        matrices[i]['variance'] = matrices[i].iloc[:, [2, 4]].apply(
             _calculate_variance_for_rows, axis=1
         )
 
