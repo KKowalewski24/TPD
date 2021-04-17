@@ -49,18 +49,17 @@ def calculate_completion_time(matrices: Dict[int, pd.DataFrame],
 
 # Returns Dict of matrix order number and tuple of summed time and standard deviation
 def _calculate_times_and_stds(matrices: Dict[int, pd.DataFrame]) -> Dict[int, Tuple[float, float]]:
-    prepared_matrices: Dict[int, pd.DataFrame] = _prepare_matrices(matrices)
-    critical_paths: Dict[int, List[int]] = find_critical_paths(prepared_matrices)
+    _prepare_matrices(matrices)
+    critical_paths: Dict[int, List[int]] = find_critical_paths(matrices)
     times_and_stds: Dict[int, Tuple[float, float]] = {}
 
     # Iterate over matrices order number
     for critical_path in critical_paths:
         # Get times for critical path and sum them
-        time_sum: float = prepared_matrices[critical_path].iloc[:, 5][
-            critical_paths[critical_path]].sum()
+        time_sum: float = matrices[critical_path].iloc[:, 5][critical_paths[critical_path]].sum()
         # Get variance for critical path, sum them and calculate sqrt
         std: float = np.sqrt(
-            prepared_matrices[critical_path].iloc[:, 6][critical_paths[critical_path]].sum()
+            matrices[critical_path].iloc[:, 6][critical_paths[critical_path]].sum()
         )
         times_and_stds[critical_path] = (time_sum, std)
 
