@@ -69,9 +69,10 @@ def _calculate_times_and_stds(matrices: Dict[int, pd.DataFrame]) -> Dict[int, Tu
 
 # Returns original DataFrame with added two columns
 def _prepare_matrices(matrices: Dict[int, pd.DataFrame]) -> Dict[int, pd.DataFrame]:
-    for i in range(len(matrices)):
-        matrices[i]['time'] = matrices[i].iloc[:, 2:5].apply(_calculate_time_for_rows, axis=1)
-        matrices[i]['variance'] = matrices[i].iloc[:, [2, 4]].apply(
+    for matrix in matrices:
+        matrices[matrix]['time'] = matrices[matrix].iloc[:, 2:5].apply(
+            _calculate_time_for_rows, axis=1)
+        matrices[matrix]['variance'] = matrices[matrix].iloc[:, [2, 4]].apply(
             _calculate_variance_for_rows, axis=1
         )
 
