@@ -71,7 +71,8 @@ def _calculate_times_and_stds(matrices: Dict[int, pd.DataFrame]) -> Dict[int, Tu
 def _prepare_matrices(matrices: Dict[int, pd.DataFrame]) -> Dict[int, pd.DataFrame]:
     for matrix in matrices:
         matrices[matrix]['time'] = matrices[matrix].iloc[:, 2:5].apply(
-            _calculate_time_for_rows, axis=1)
+            _calculate_time_for_rows, axis=1
+        )
         matrices[matrix]['variance'] = matrices[matrix].iloc[:, [2, 4]].apply(
             _calculate_variance_for_rows, axis=1
         )
