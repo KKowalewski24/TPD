@@ -1,7 +1,12 @@
 import subprocess
 import sys
+from argparse import ArgumentParser, Namespace
+
+import pandas as pd
 
 """
+Sample usage:
+    python main.py -f data/process_table_from_task.csv
 """
 
 
@@ -9,10 +14,22 @@ import sys
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
+    args = prepare_args()
+    process_table: pd.DataFrame = pd.read_csv(args.filename)
+    print("process_table")
+    print(process_table)
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
+def prepare_args() -> Namespace:
+    arg_parser = ArgumentParser()
+    arg_parser.add_argument(
+        "-f", "--filename", required=True, type=str, help="Filename of process table"
+    )
+
+    return arg_parser.parse_args()
+
 
 # UTIL ----------------------------------------------------------------------- #
 def check_types_check_style() -> None:
