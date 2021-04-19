@@ -1,80 +1,39 @@
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 import numpy as np
 import pandas as pd
-from scipy.stats import norm
 
 from module.cpm_solution import find_critical_paths
 
 
-# Returns order number of more probable variant and probability value
-def calculate_probability_and_variant(matrices: Dict[int, pd.DataFrame],
+def calculate_probability_and_variant(matrices: List[pd.DataFrame],
                                       expected_time: float) -> Tuple[int, float]:
-    times_and_stds: Dict[int, Tuple[float, float]] = _calculate_times_and_stds(matrices)
-    probabilities: Dict[int, float] = {}
-
-    for time_and_std in times_and_stds:
-        time: float = times_and_stds[time_and_std][0]
-        std: float = times_and_stds[time_and_std][1]
-        if std == 0:
-            print("Std cannot be ZERO - Dividing by ZERO is forbidden")
-            continue
-
-        probabilities[time_and_std] = norm.cdf((expected_time - time) / std)
-
-    max_probability_key: int = max(probabilities, key=probabilities.get)
-    return max_probability_key, probabilities[max_probability_key]
+    return 0, 1.0
 
 
-# Returns order number of matrix and time value for each
-def calculate_completion_time(matrices: Dict[int, pd.DataFrame],
-                              expected_probability: float) -> Dict[int, float]:
+def calculate_completion_time(matrices: List[pd.DataFrame],
+                              expected_probability: float) -> List[float]:
     if expected_probability > 1:
         raise Exception("Probability cannot be greater than 1")
 
-    times_and_stds: Dict[int, Tuple[float, float]] = _calculate_times_and_stds(matrices)
-    times: Dict[int, float] = {}
-
-    for time_and_std in times_and_stds:
-        time: float = times_and_stds[time_and_std][0]
-        std: float = times_and_stds[time_and_std][1]
-        if std == 0:
-            print("Std cannot be ZERO - Dividing by ZERO is forbidden")
-            continue
-
-        times[time_and_std] = (norm.ppf(expected_probability) * std) + time
-
-    return times
+    return [1, 2]
 
 
-# Returns Dict of matrix order number and tuple of summed time and standard deviation
-def _calculate_times_and_stds(matrices: Dict[int, pd.DataFrame]) -> Dict[int, Tuple[float, float]]:
-    _prepare_matrices(matrices)
-    critical_paths: Dict[int, List[int]] = find_critical_paths(matrices)
-    times_and_stds: Dict[int, Tuple[float, float]] = {}
+def _calculate_sum_time_and_std(matrix: pd.DataFrame) -> Tuple[float, float]:
+    _prepare_matrix(matrix)
+    critical_path: List[int] = find_critical_paths(matrix)
 
-    # Iterate over matrices order number
-    for critical_path in critical_paths:
-        # Get times for critical path and sum them
-        time_sum: float = matrices[critical_path].iloc[:, 5][critical_paths[critical_path]].sum()
-        # Get variance for critical path, sum them and calculate sqrt
-        std: float = np.sqrt(
-            matrices[critical_path].iloc[:, 6][critical_paths[critical_path]].sum()
-        )
-        times_and_stds[critical_path] = (time_sum, std)
+    # Get times for critical path and sum them
+    time_sum: float = matrix.iloc[:, 5][critical_path].sum()
+    # Get variance for critical path, sum them and calculate sqrt
+    std: float = np.sqrt(matrix.iloc[:, 6][critical_path].sum())
 
-    return times_and_stds
+    return time_sum, std
 
 
-# Returns original DataFrame with added two columns
-def _prepare_matrices(matrices: Dict[int, pd.DataFrame]) -> None:
-    for matrix in matrices:
-        matrices[matrix]['time'] = matrices[matrix].iloc[:, 2:5].apply(
-            _calculate_time_for_rows, axis=1
-        )
-        matrices[matrix]['variance'] = matrices[matrix].iloc[:, [2, 4]].apply(
-            _calculate_variance_for_rows, axis=1
-        )
+def _prepare_matrix(matrix: pd.DataFrame) -> None:
+    matrix['time'] = matrix.iloc[:, 2:5].apply(_calculate_time_for_rows, axis=1)
+    matrix['variance'] = matrix.iloc[:, [2, 4]].apply(_calculate_variance_for_rows, axis=1)
 
 
 def _calculate_time_for_rows(row_data: List[float]) -> float:

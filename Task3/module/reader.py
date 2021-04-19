@@ -1,11 +1,11 @@
-from typing import Dict, List
+from typing import List
 
 import pandas as pd
 
 
-def read_csv_matrices(filenames: List[str]) -> Dict[int, pd.DataFrame]:
-    matrices: Dict[int, pd.DataFrame] = {}
-    for index in range(len(filenames)):
-        matrices[index] = pd.read_csv(filenames[index])
+def read_csv_matrices(filenames: List[str]) -> List[pd.DataFrame]:
+    matrices: List[pd.DataFrame] = []
+    for filename in filenames:
+        matrices.append(pd.read_csv(filename))
 
     return matrices

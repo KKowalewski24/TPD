@@ -1,9 +1,8 @@
 import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
-from typing import Dict, Union
+from typing import List
 
-import numpy as np
 import pandas as pd
 
 from module.pert_solution import calculate_completion_time, calculate_probability_and_variant
@@ -15,12 +14,10 @@ python main.py -f data/A_variant_matrix_from_task.csv data/B_variant_matrix_from
 """
 
 
-# VAR ------------------------------------------------------------------------ #
-
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
     args = prepare_args()
-    matrices: Dict[int, pd.DataFrame] = read_csv_matrices(args.filenames)
+    matrices: List[pd.DataFrame] = read_csv_matrices(args.filenames)
     print("Base matrices")
     print_matrices(matrices)
 
@@ -37,10 +34,10 @@ def main() -> None:
 
 
 # DEF ------------------------------------------------------------------------ #
-def print_matrices(matrices: Union[Dict[int, np.ndarray], Dict[int, pd.DataFrame]]) -> None:
-    for matrix in matrices:
-        print("Matrix order number: " + str(matrix + 1))
-        print(str(matrices[matrix]) + "\n")
+def print_matrices(matrices: List[pd.DataFrame]) -> None:
+    for i in range(len(matrices)):
+        print("Matrix order number: " + str(i + 1))
+        print(str(matrices[i]) + "\n")
 
 
 def print_result_for_term(probability: float, variant_number: int) -> None:
@@ -48,11 +45,11 @@ def print_result_for_term(probability: float, variant_number: int) -> None:
     print("More probable variant: " + str(variant_number + 1))
 
 
-def print_result_for_probability(completion_times: Dict[int, float]) -> None:
-    for completion_time in completion_times:
+def print_result_for_probability(completion_times: List[float]) -> None:
+    for i in range(len(completion_times)):
         print(
-            "Project order number: " + str(completion_time + 1)
-            + ", Completion time: " + str(round(completion_times[completion_time], 4))
+            "Project order number: " + str(i + 1)
+            + ", Completion time: " + str(round(completion_times[i], 4))
         )
 
 
