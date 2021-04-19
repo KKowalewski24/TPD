@@ -1,14 +1,20 @@
-from typing import List, Tuple
+from typing import Callable, List, Tuple
 
 import numpy as np
 import pandas as pd
+from scipy.stats import norm
 
 from module.cpm_solution import find_critical_paths
 
 
 def calculate_probability_and_variant(matrices: List[pd.DataFrame],
                                       expected_time: float) -> Tuple[int, float]:
-    return 0, 1.0
+    probabilities = _calculate_values_based_on_time_and_std(
+        matrices, lambda time, std: norm.cdf((expected_time - time) / std)
+    )
+    max_probability = max(probabilities)
+    max_probability_index = probabilities.index(max_probability)
+    return max_probability_index, max_probability
 
 
 def calculate_completion_time(matrices: List[pd.DataFrame],
@@ -16,7 +22,29 @@ def calculate_completion_time(matrices: List[pd.DataFrame],
     if expected_probability > 1:
         raise Exception("Probability cannot be greater than 1")
 
-    return [1, 2]
+    return _calculate_values_based_on_time_and_std(
+        matrices, lambda time, std: (norm.ppf(expected_probability) * std) + time
+    )
+
+
+def _calculate_values_based_on_time_and_std(
+        matrices: List[pd.DataFrame],
+        callback: Callable[[float, float], float]) -> List[float]:
+    times_and_stds: List[Tuple[float, float]] = []
+    for matrix in matrices:
+        times_and_stds.append(_calculate_sum_time_and_std(matrix))
+
+    values: List[float] = []
+    for time_and_std in times_and_stds:
+        time = time_and_std[0]
+        std = time_and_std[1]
+        if std == 0:
+            print("Std cannot be ZERO - Dividing by ZERO is forbidden")
+            continue
+
+        values.append(callback(time, std))
+
+    return values
 
 
 def _calculate_sum_time_and_std(matrix: pd.DataFrame) -> Tuple[float, float]:
