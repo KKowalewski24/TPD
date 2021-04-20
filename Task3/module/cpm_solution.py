@@ -37,12 +37,12 @@ def find_critical_paths(matrix: pd.DataFrame) -> List[int]:
         }
 
     # calculate critical path
-    nodes_numbers = sorted(graph)
-    critical_path = [nodes_numbers[0]]
-    for i in nodes_numbers:
+    critical_path = []
+    for i in sorted(graph):
         for j in graph[i]['total_reserve']:
-            if graph[i]['total_reserve'][j] == 0 and critical_path[-1] == i:
-                critical_path.append(j)
+            if graph[i]['total_reserve'][j] == 0 and (
+                    len(critical_path) == 0 or critical_path[-1][1] == i):
+                critical_path.append((i, j))
 
     return critical_path
 
