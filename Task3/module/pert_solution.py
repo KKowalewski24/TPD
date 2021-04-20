@@ -50,7 +50,7 @@ def _calculate_values_based_on_time_and_std(
 def _calculate_sum_time_and_std(matrix: pd.DataFrame) -> Tuple[float, float]:
     _prepare_matrix(matrix)
     critical_path = [matrix[np.logical_and(matrix['Activity-I'] == i, matrix['Activity-J'] == j)]
-            .iloc[0].name for i, j in find_critical_paths(matrix)]
+                         .iloc[0].name for i, j in find_critical_paths(matrix)]
 
     # Get times for critical path and sum them
     time_sum: float = matrix.iloc[:, 5][critical_path].sum()
