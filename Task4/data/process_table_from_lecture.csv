@@ -1,0 +1,9 @@
+stage,initial_state,decision,end_state,losses
+1,1,A,2,1
+1,1,B,3,8
+2,2,D,4,7
+2,2,D,5,4
+2,3,E,4,7
+2,3,E,5,3
+3,4,K,6,5
+3,5,K,6,2
