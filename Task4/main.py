@@ -1,8 +1,11 @@
 import subprocess
 import sys
 from argparse import ArgumentParser, Namespace
+from typing import List
 
 import pandas as pd
+
+from module.dynamic_programming_solution import find_optimal_strategy
 
 """
 Sample usage:
@@ -17,11 +20,22 @@ def main() -> None:
     args = prepare_args()
     process_table: pd.DataFrame = pd.read_csv(args.filename)
     print("process_table")
-    print(process_table)
+    print(process_table, end="\n\n")
+    best_decisions, min_losses = find_optimal_strategy(process_table)
+    display_result(best_decisions, min_losses)
+
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
+def display_result(best_decisions: List[str], min_losses: float) -> None:
+    print("Minimal losses value: " + str(min_losses))
+    for best_decision in best_decisions:
+        print("Best decisions: ")
+        print(best_decision, end=",")
+    print()
+
+
 def prepare_args() -> Namespace:
     arg_parser = ArgumentParser()
     arg_parser.add_argument(
