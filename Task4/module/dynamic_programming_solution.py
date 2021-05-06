@@ -6,7 +6,13 @@ import pandas as pd
 def find_optimal_strategy(process_table: pd.DataFrame) -> Tuple[List[str], float]:
     graph = _build_graph(process_table)
 
-    # TODO
+    stages = _get_stages_number(process_table)
+    for stage in reversed(stages):
+        for node in graph:
+            if graph[node]["stage"] == stage:
+                print(node, end=" ")
+                print(graph[node])
+
     return [""], 1
 
 
@@ -27,3 +33,7 @@ def _build_graph(process_table: pd.DataFrame) -> Dict:
         graph[end_state]["before"][initial_state] = losses
 
     return graph
+
+
+def _get_stages_number(process_table: pd.DataFrame) -> List[int]:
+    return process_table["stage"].unique()

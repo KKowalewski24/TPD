@@ -29,11 +29,10 @@ def main() -> None:
 
 # DEF ------------------------------------------------------------------------ #
 def display_result(best_decisions: List[str], min_losses: float) -> None:
-    print("Minimal losses value: " + str(min_losses))
     for best_decision in best_decisions:
-        print("Best decisions: ")
+        print("Best decisions: ", end="")
         print(best_decision, end=",")
-    print()
+    print("\nMinimal losses value: " + str(min_losses))
 
 
 def prepare_args() -> Namespace:
