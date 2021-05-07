@@ -5,15 +5,28 @@ import pandas as pd
 
 def find_optimal_strategy(process_table: pd.DataFrame) -> Tuple[List[str], float]:
     graph = _build_graph(process_table)
-
     stages = _get_stages_number(process_table)
+
     for stage in reversed(stages):
-        for node in graph:
+        for node in reversed(graph):
             if graph[node]["stage"] == stage:
-                print(node, end=" ")
-                print(graph[node])
+                after_items = _check_if_after_items_empty(graph[node]["after"], node)
+                for after in after_items:
+                    print(after, end=" ")
+                    print(after_items[after])
+                # print(graph[node]["before"])
+                pass
 
     return [""], 1
+
+
+# Returns passed dict if it is not empty, otherwise it returns new dict with
+# node_number and ZERO value of loss
+def _check_if_after_items_empty(after_items: Dict[int, float],
+                                node_number: int) -> Dict[int, float]:
+    if bool(after_items):
+        return after_items
+    return {node_number: 0}
 
 
 def _build_graph(process_table: pd.DataFrame) -> Dict:
