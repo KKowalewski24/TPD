@@ -10,22 +10,21 @@ def find_optimal_strategy(process_table: pd.DataFrame) -> Tuple[List[str], float
     for stage in reversed(stages):
         for node in reversed(graph):
             if graph[node]["stage"] == stage:
-                after_items = _check_if_after_items_empty(graph[node]["after"], node)
+                before_items = graph[node]["before"]
+                after_items = _get_dict_when_no_neighbours(graph[node]["after"], node)
                 for after in after_items:
                     print(after, end=" ")
                     print(after_items[after])
-                # print(graph[node]["before"])
-                pass
 
     return [""], 1
 
 
 # Returns passed dict if it is not empty, otherwise it returns new dict with
 # node_number and ZERO value of loss
-def _check_if_after_items_empty(after_items: Dict[int, float],
-                                node_number: int) -> Dict[int, float]:
-    if bool(after_items):
-        return after_items
+def _get_dict_when_no_neighbours(neighbours: Dict[int, float],
+                                 node_number: int) -> Dict[int, float]:
+    if bool(neighbours):
+        return neighbours
     return {node_number: 0}
 
 
