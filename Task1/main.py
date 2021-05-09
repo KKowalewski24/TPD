@@ -22,7 +22,7 @@ def main() -> None:
 
     display_result(
         maxi_min_criteria(chosen_matrix),
-        "Minimaks użyteczności - maksymalizuje najmniejszą możliwą użyteczność"
+        "Walda - Minimaks użyteczności - maksymalizuje najmniejszą możliwą użyteczność"
     )
     display_result(
         max_max_criteria(chosen_matrix),
