@@ -9,7 +9,7 @@ from module.criteria import bayes_laplace_criteria, hurwicz_criteria, max_max_cr
 
 """
 Sample usage:
-    python main.py -f data/task_matrix.txt --hurwicz 0.5 -p 4 4 4 4
+    python main.py -f data/task_matrix.txt --hurwicz 0.5 -p 0.25 0.25 0.25 0.25
 """
 
 
@@ -17,7 +17,7 @@ Sample usage:
 def main() -> None:
     args = prepare_args()
     chosen_matrix: np.ndarray = np.loadtxt(args.filename)
-    print("chosen_matrix")
+    print("Chosen Matrix")
     print(chosen_matrix)
 
     display_result(
@@ -33,7 +33,7 @@ def main() -> None:
         "Hurwicz"
     )
     display_result(
-        bayes_laplace_criteria(chosen_matrix, [1 / int(item) for item in args.probabilities]),
+        bayes_laplace_criteria(chosen_matrix, args.probabilities),
         "Bayes Laplace"
     )
     display_result(
@@ -54,8 +54,8 @@ def prepare_args() -> Namespace:
         "--hurwicz", required=True, type=float, help="Coefficient of Hurwicz criterion"
     )
     arg_parser.add_argument(
-        "-p", "--probabilities", required=True, type=int, action="store", nargs="*",
-        help="Divisors sequence of fractions of probabilities"
+        "-p", "--probabilities", required=True, type=float, action="store", nargs="*",
+        help="List of probabilities"
     )
     return arg_parser.parse_args()
 
