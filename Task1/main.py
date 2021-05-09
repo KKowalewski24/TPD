@@ -1,39 +1,39 @@
 import subprocess
 import sys
-import os
+from argparse import ArgumentParser, Namespace
 
 import numpy as np
-from typing import List
 
-from module.criteria import hurwicz_criteria, max_max_criteria, \
-    maxi_min_criteria, savage_criteria, bayes_laplace_criteria
-from module.util import is_convertible_to_float, is_array_convertible_to_int
+from module.criteria import bayes_laplace_criteria, hurwicz_criteria, max_max_criteria, \
+    maxi_min_criteria, savage_criteria
+
+"""
+Sample usage:
+    python main.py -f data/task_matrix.txt --hurwicz 0.5 -p 0.25 0.25 0.25 0.25
+"""
 
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
-    chosen_matrix: np.ndarray = np.loadtxt(get_filename())
-    print("chosen_matrix")
+    args = prepare_args()
+    chosen_matrix: np.ndarray = np.loadtxt(args.filename)
+    print("Chosen Matrix")
     print(chosen_matrix)
-
-    hurwicz_factor: float = get_factor()
-    probabilities: List[float] = get_probabilities()
-    print()
 
     display_result(
         maxi_min_criteria(chosen_matrix),
-        "Minimaks użyteczności - maksymalizuje najmniejszą możliwą użyteczność"
+        "Walda - Minimaks użyteczności - maksymalizuje najmniejszą możliwą użyteczność"
     )
     display_result(
         max_max_criteria(chosen_matrix),
         "Max Max - kryterium optymistyczne"
     )
     display_result(
-        hurwicz_criteria(chosen_matrix, hurwicz_factor),
+        hurwicz_criteria(chosen_matrix, args.hurwicz),
         "Hurwicz"
     )
     display_result(
-        bayes_laplace_criteria(chosen_matrix, probabilities),
+        bayes_laplace_criteria(chosen_matrix, args.probabilities),
         "Bayes Laplace"
     )
     display_result(
@@ -45,33 +45,19 @@ def main() -> None:
 
 
 # DEF ------------------------------------------------------------------------ #
-def get_factor() -> float:
-    is_float: bool = False
-    value: str = ""
-    while not is_float:
-        value = input("Podaj współczynnik do kryterium Hurwicza: ")
-        is_float = is_convertible_to_float(value)
-
-    return float(value)
-
-
-def get_probabilities() -> List[float]:
-    value: str = ""
-    has_only_integers: bool = False
-    while not has_only_integers:
-        value = input(
-            "Podaj kolejne dzielniki ułamków zwykłych prawdopodobieństw rozdzielone spacjami: "
-        )
-        has_only_integers = is_array_convertible_to_int(value.split())
-
-    return [1 / int(item) for item in value.split()]
-
-
-def get_filename() -> str:
-    filename: str = ""
-    while not os.path.isfile(filename):
-        filename = input("Podaj nazwę pliku txt z macierzą użyteczności: ")
-    return filename
+def prepare_args() -> Namespace:
+    arg_parser = ArgumentParser()
+    arg_parser.add_argument(
+        "-f", "--filename", required=True, type=str, help="Filename of matrix"
+    )
+    arg_parser.add_argument(
+        "--hurwicz", required=True, type=float, help="Coefficient of Hurwicz criterion"
+    )
+    arg_parser.add_argument(
+        "-p", "--probabilities", required=True, type=float, action="store", nargs="*",
+        help="List of probabilities"
+    )
+    return arg_parser.parse_args()
 
 
 def display_result(decision_number: int, criteria_name: str) -> None:
@@ -99,5 +85,5 @@ def display_finish() -> None:
 if __name__ == "__main__":
     if check_if_exists_in_args("-t"):
         check_types_check_style()
-
-    main()
+    else:
+        main()
