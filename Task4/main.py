@@ -19,19 +19,19 @@ Sample usage:
 def main() -> None:
     args = prepare_args()
     process_table: pd.DataFrame = pd.read_csv(args.filename)
-    print("process_table")
+    print("Process Table")
     print(process_table, end="\n\n")
-    best_decisions, min_losses = find_optimal_strategy(process_table)
-    display_result(best_decisions, min_losses)
+    states, min_losses = find_optimal_strategy(process_table)
+    display_result(states, min_losses)
 
     display_finish()
 
 
 # DEF ------------------------------------------------------------------------ #
-def display_result(best_decisions: List[str], min_losses: float) -> None:
-    for best_decision in best_decisions:
-        print("Best decisions: ", end="")
-        print(best_decision, end=",")
+def display_result(states: List[int], min_losses: float) -> None:
+    print("Best states: ", end="")
+    for state in states:
+        print(state, end=",")
     print("\nMinimal losses value: " + str(min_losses))
 
 
