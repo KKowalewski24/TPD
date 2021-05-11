@@ -1,4 +1,6 @@
+scipy
+pandas
+numpy
 flake8
 pep8-naming
 mypy
-numpy

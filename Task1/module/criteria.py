@@ -3,7 +3,7 @@ from typing import List
 import numpy as np
 
 
-# Minimaks użyteczności - maksymalizuje najmniejszą możliwą użyteczność
+# Walda - Minimaks użyteczności - maksymalizuje najmniejszą możliwą użyteczność
 def maxi_min_criteria(matrix: np.ndarray, debug_mode: bool = False) -> int:
     min_rows = matrix.min(axis=1)
     if debug_mode:
@@ -72,7 +72,6 @@ def bayes_laplace_criteria(matrix: np.ndarray, probabilities: List[float],
 
 # Savage - jest błąd w wykładzie - strona 39 - [zbożę 4, normalne] - powinno byc 5 a nie 3
 def savage_criteria(matrix: np.ndarray, debug_mode: bool = False) -> int:
-
     relative_losses_matrix = (matrix.max(axis=0) - matrix)
     max_relative_losses_matrix = relative_losses_matrix.max(axis=1)
 
