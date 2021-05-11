@@ -17,8 +17,10 @@ def find_optimal_strategy(process_table: pd.DataFrame) -> Tuple[List[int], float
 
     strategy = [1]
     while strategy[-1] != sorted(graph)[-1]:
-        strategy.append(min(graph[strategy[-1]]["after"], 
-            key=lambda node: graph[strategy[-1]]["after"][node]))
+        strategy.append(
+            min(graph[strategy[-1]]["after"],
+                key=lambda node: graph[strategy[-1]]["after"][node])
+        )
 
     return strategy, graph[1]["min_losses"]
 
