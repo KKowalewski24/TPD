@@ -1,8 +1,10 @@
 from random import expovariate
+
 import numpy as np
 
 
 class Task:
+
     def __init__(self, start_time, handling_time):
         self.start_time = start_time
         self.handling_time = handling_time
@@ -10,14 +12,15 @@ class Task:
         self.consumed_time = 0
         self.priority = 0
 
+
     def handle(self, current_time, spent_time):
         self.consumed_time += spent_time
         if self.consumed_time >= self.handling_time:
             self.end_time = current_time
 
+
     def update_priority(self, current_time, coef):
         self.priority = (current_time - self.start_time) * coef
-
 
 
 def generate_tasks(mean_break_time, mean_handling_time, number_of_tasks):
@@ -39,7 +42,7 @@ mean_break_time = 5
 mean_handling_time = 5
 
 # lists of tasks
-N = int(input("Number of tasks:"))
+N = int(input("Number of tasks: "))
 tasks = generate_tasks(mean_break_time, mean_handling_time, N)
 waiting_tasks = set()
 handled_tasks = set()
