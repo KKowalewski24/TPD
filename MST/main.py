@@ -11,13 +11,14 @@ def main() -> None:
     print(graph_matrix, end="\n\n")
 
     tree = minimum_spanning_tree(graph_matrix)
-    print(tree)
+    print(tree, end="\n\n")
+    print("Length of minimum spanning tree: ", tree.toarray().sum())
 
 
 def prepare_args() -> Namespace:
     arg_parser = ArgumentParser()
     arg_parser.add_argument(
-        "-f", "--filename", required=True, type=str, help="Filename of matrix"
+        "-f", "--filename", required=True, type=str, help="Filename of graph matrix"
     )
     return arg_parser.parse_args()
 
