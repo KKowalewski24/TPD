@@ -3,6 +3,11 @@ from argparse import ArgumentParser, Namespace
 import numpy as np
 from scipy.sparse.csgraph import minimum_spanning_tree
 
+"""
+How to change graph into required array:
+    https://www.youtube.com/watch?v=0ngDYRvBFNk
+"""
+
 
 def main() -> None:
     args = prepare_args()
