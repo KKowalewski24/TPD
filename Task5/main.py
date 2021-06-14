@@ -1,7 +1,8 @@
-import argparse
 import subprocess
 import sys
+from argparse import ArgumentParser, Namespace
 from random import expovariate
+from typing import Set
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -18,13 +19,7 @@ python main.py -e 1000 1 1 2 5 -e 1000 2 1 2 5 -e 1000 4 1 2 5 -e 1000 8 1 2 5 -
 
 # MAIN ----------------------------------------------------------------------- #
 def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-e", action="append", nargs=5,
-        metavar=["n_tasks", "alpha", "beta", "mean_break_time", "mean_handling_time"],
-        type=int, required=True
-    )
-    args = parser.parse_args()
+    args = prepare_args()
 
     results = []
     min_handling_time = 100000000
@@ -60,18 +55,7 @@ def main() -> None:
 
 
 # DEF ------------------------------------------------------------------------ #
-def generate_tasks(mean_break_time, mean_handling_time, number_of_tasks):
-    tasks = set()
-    last_start_time = 0.0
-    for i in range(number_of_tasks):
-        start_time = last_start_time + expovariate(1.0 / mean_break_time)
-        handling_time = expovariate(1.0 / mean_handling_time)
-        tasks.add(Task(start_time, handling_time))
-        last_start_time = start_time
-    return tasks
-
-
-def make_simulation(number_of_tasks, alpha, beta, mean_break_time, mean_handling_time):
+def make_simulation(number_of_tasks, alpha, beta, mean_break_time, mean_handling_time) -> set:
     print("\n\n--------START---------")
     # lists of tasks
     tasks = generate_tasks(mean_break_time, mean_handling_time, number_of_tasks)
@@ -111,6 +95,28 @@ def make_simulation(number_of_tasks, alpha, beta, mean_break_time, mean_handling
         print("{}: {}/{}".format(time, len(done_tasks), number_of_tasks))
 
     return done_tasks
+
+
+def generate_tasks(mean_break_time, mean_handling_time, number_of_tasks) -> Set[Task]:
+    tasks = set()
+    last_start_time = 0.0
+    for i in range(number_of_tasks):
+        start_time = last_start_time + expovariate(1.0 / mean_break_time)
+        handling_time = expovariate(1.0 / mean_handling_time)
+        tasks.add(Task(start_time, handling_time))
+        last_start_time = start_time
+    return tasks
+
+
+def prepare_args() -> Namespace:
+    arg_parser = ArgumentParser()
+    arg_parser.add_argument(
+        "-e", action="append", nargs=5,
+        metavar=["n_tasks", "alpha", "beta", "mean_break_time", "mean_handling_time"],
+        type=int, required=True
+    )
+
+    return arg_parser.parse_args()
 
 
 # UTIL ----------------------------------------------------------------------- #
