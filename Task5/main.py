@@ -1,4 +1,6 @@
 import argparse
+import subprocess
+import sys
 from random import expovariate
 
 import matplotlib.pyplot as plt
@@ -14,6 +16,50 @@ python main.py -e 1000 1 1 2 5 -e 1000 2 1 2 5 -e 1000 4 1 2 5 -e 1000 8 1 2 5 -
 """
 
 
+# MAIN ----------------------------------------------------------------------- #
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-e", action="append", nargs=5,
+        metavar=["n_tasks", "alpha", "beta", "mean_break_time", "mean_handling_time"],
+        type=int, required=True
+    )
+    args = parser.parse_args()
+
+    results = []
+    min_handling_time = 100000000
+    max_handling_time = 0
+    for n_tasks, alpha, beta, mean_break_time, mean_handling_time in args.e:
+        done_tasks = make_simulation(n_tasks, alpha, beta, mean_break_time, mean_handling_time)
+        handling_times = np.array([task.handling_time for task in done_tasks])
+        waiting_times = np.array(
+            [task.end_time - task.start_time - task.handling_time for task in done_tasks]
+        )
+
+        regressor = SGDRegressor()
+        regressor.fit(np.reshape(handling_times, (-1, 1)), waiting_times)
+        results.append((regressor, "a={}, b={}".format(alpha, beta)))
+
+        if min_handling_time > min(handling_times):
+            min_handling_time = min(handling_times)
+
+        if max_handling_time < max(handling_times):
+            max_handling_time = max(handling_times)
+
+    for regressor, label in results:
+        plt.plot(
+            [min_handling_time, max_handling_time],
+            regressor.predict(np.reshape([min_handling_time, max_handling_time], (-1, 1))),
+            label=label
+        )
+
+    plt.legend()
+    plt.show()
+
+    display_finish()
+
+
+# DEF ------------------------------------------------------------------------ #
 def generate_tasks(mean_break_time, mean_handling_time, number_of_tasks):
     tasks = set()
     last_start_time = 0.0
@@ -67,41 +113,31 @@ def make_simulation(number_of_tasks, alpha, beta, mean_break_time, mean_handling
     return done_tasks
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-e", action="append", nargs=5,
-        metavar=["n_tasks", "alpha", "beta", "mean_break_time", "mean_handling_time"],
-        type=int, required=True
-    )
-    args = parser.parse_args()
+# UTIL ----------------------------------------------------------------------- #
+def check_types_check_style() -> None:
+    subprocess.call(["mypy", "."])
+    subprocess.call(["flake8", "."])
 
-    results = []
-    min_handling_time = 100000000
-    max_handling_time = 0
-    for n_tasks, alpha, beta, mean_break_time, mean_handling_time in args.e:
-        done_tasks = make_simulation(n_tasks, alpha, beta, mean_break_time, mean_handling_time)
-        handling_times = np.array([task.handling_time for task in done_tasks])
-        waiting_times = np.array(
-            [task.end_time - task.start_time - task.handling_time for task in done_tasks]
-        )
 
-        regressor = SGDRegressor()
-        regressor.fit(np.reshape(handling_times, (-1, 1)), waiting_times)
-        results.append((regressor, "a={}, b={}".format(alpha, beta)))
+def compile_to_pyc() -> None:
+    subprocess.call(["python", "-m", "compileall", "."])
 
-        if min_handling_time > min(handling_times):
-            min_handling_time = min(handling_times)
 
-        if max_handling_time < max(handling_times):
-            max_handling_time = max(handling_times)
+def check_if_exists_in_args(arg: str) -> bool:
+    return arg in sys.argv
 
-    for regressor, label in results:
-        plt.plot(
-            [min_handling_time, max_handling_time],
-            regressor.predict(np.reshape([min_handling_time, max_handling_time], (-1, 1))),
-            label=label
-        )
 
-    plt.legend()
-    plt.show()
+def display_finish() -> None:
+    print("------------------------------------------------------------------------")
+    print("FINISHED")
+    print("------------------------------------------------------------------------")
+
+
+# __MAIN__ ------------------------------------------------------------------- #
+if __name__ == "__main__":
+    if check_if_exists_in_args("-t"):
+        check_types_check_style()
+    elif check_if_exists_in_args("-b"):
+        compile_to_pyc()
+    else:
+        main()
