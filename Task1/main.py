@@ -10,6 +10,7 @@ from module.criteria import bayes_laplace_criteria, hurwicz_criteria, max_max_cr
 """
 Sample usage:
     python main.py -f data/task_matrix.txt --hurwicz 0.5 -p 0.25 0.25 0.25 0.25
+    python main.py -f data/exam_matrix1.txt --hurwicz 0.5 -p 0.1 0.3 0.2 0.2 0.2
 """
 
 
