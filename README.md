@@ -1,8 +1,5 @@
 # TPD
 
-## Reports
-### [Link](https://drive.google.com/drive/folders/1lNUAfheSgiorXfOeEX_yl6McxNwGfk4F?usp=sharing)
-
 ## Instalacja pakietów
 Wejdź do katalogu z wybranym zadaniem i wykonaj polecenie
 ```

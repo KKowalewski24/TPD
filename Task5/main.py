@@ -1,9 +1,15 @@
+import argparse
 from random import expovariate
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 from sklearn.linear_model import SGDRegressor
-import argparse
+
+"""
+python main.py -e 1000 1 1 10 5 -e 1000 2 1 10 5 -e 1000 4 1 10 5 -e 1000 8 1 10 5 -e 1000 0 0 10 5
+python main.py -e 1000 1 1 6 5 -e 1000 2 1 6 5 -e 1000 4 1 6 5 -e 1000 8 1 6 5 -e 1000 0 0 6 5
+python main.py -e 1000 1 1 2 5 -e 1000 2 1 2 5 -e 1000 4 1 2 5 -e 1000 8 1 2 5 -e 1000 0 0 2 5
+"""
 
 
 class Task:
@@ -75,13 +81,17 @@ def make_simulation(number_of_tasks, alpha, beta, mean_break_time, mean_handling
         handled_tasks -= done_tasks
 
         print("{}: {}/{}".format(time, len(done_tasks), number_of_tasks))
-    
+
     return done_tasks
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("-e", action="append", nargs=5, metavar=["n_tasks", "alpha", "beta", "mean_break_time", "mean_handling_time"], type=int, required=True)
+    parser.add_argument(
+        "-e", action="append", nargs=5,
+        metavar=["n_tasks", "alpha", "beta", "mean_break_time", "mean_handling_time"],
+        type=int, required=True
+    )
     args = parser.parse_args()
 
     results = []
@@ -90,20 +100,26 @@ if __name__ == '__main__':
     for n_tasks, alpha, beta, mean_break_time, mean_handling_time in args.e:
         done_tasks = make_simulation(n_tasks, alpha, beta, mean_break_time, mean_handling_time)
         handling_times = np.array([task.handling_time for task in done_tasks])
-        waiting_times = np.array([task.end_time - task.start_time - task.handling_time for task in done_tasks])
- 
+        waiting_times = np.array(
+            [task.end_time - task.start_time - task.handling_time for task in done_tasks]
+        )
+
         regressor = SGDRegressor()
-        regressor.fit(np.reshape(handling_times, (-1,1)), waiting_times)
+        regressor.fit(np.reshape(handling_times, (-1, 1)), waiting_times)
         results.append((regressor, "a={}, b={}".format(alpha, beta)))
- 
+
         if min_handling_time > min(handling_times):
             min_handling_time = min(handling_times)
- 
+
         if max_handling_time < max(handling_times):
             max_handling_time = max(handling_times)
- 
+
     for regressor, label in results:
-        plt.plot([min_handling_time, max_handling_time], regressor.predict(np.reshape([min_handling_time, max_handling_time], (-1,1))), label=label)
- 
+        plt.plot(
+            [min_handling_time, max_handling_time],
+            regressor.predict(np.reshape([min_handling_time, max_handling_time], (-1, 1))),
+            label=label
+        )
+
     plt.legend()
     plt.show()
