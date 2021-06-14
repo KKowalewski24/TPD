@@ -5,31 +5,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.linear_model import SGDRegressor
 
+from module.Task import Task
+
 """
 python main.py -e 1000 1 1 10 5 -e 1000 2 1 10 5 -e 1000 4 1 10 5 -e 1000 8 1 10 5 -e 1000 0 0 10 5
 python main.py -e 1000 1 1 6 5 -e 1000 2 1 6 5 -e 1000 4 1 6 5 -e 1000 8 1 6 5 -e 1000 0 0 6 5
 python main.py -e 1000 1 1 2 5 -e 1000 2 1 2 5 -e 1000 4 1 2 5 -e 1000 8 1 2 5 -e 1000 0 0 2 5
 """
-
-
-class Task:
-
-    def __init__(self, start_time, handling_time):
-        self.start_time = start_time
-        self.handling_time = handling_time
-        self.end_time = None
-        self.consumed_time = 0
-        self.priority = 0
-
-
-    def handle(self, current_time, spent_time):
-        self.consumed_time += spent_time
-        if self.consumed_time >= self.handling_time:
-            self.end_time = current_time
-
-
-    def update_priority(self, current_time, coef):
-        self.priority = (current_time - self.start_time) * coef
 
 
 def generate_tasks(mean_break_time, mean_handling_time, number_of_tasks):
